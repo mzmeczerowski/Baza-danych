@@ -1,0 +1,47 @@
+TRIGGERS (10):
+1) stan kasy(ilosc pieniedzy w kasie);
+2) stan magazynu(stan magazynu - ilosc * zamuwienie);
+3) informacja gdy iloœæ towaru <= 30)
+4) stanowiska(czy wolne)
+5) 
+6)
+7)
+8)
+9)
+10)stan kasy;
+
+FUNCTIONS (10):
+1) iloœæ produktu w magazynie - stan(produkt);
+2) wyswietl wolne stanowaiska danej us³ugi - czy_wolne_stanowisko(id_us³uga) @bool;
+3) wyp³aty_pracowników(data_wyp³aty);
+4) pracownicy zarabiajacy wiecej ni¿(x);
+5) pracownicy_na_imprezie(impreza) @pracownicy;
+6) iloœc_zamuwien_produktu_w_danym_dniu(data, id_produktu) @table
+7) wypisz wszystkie produkty od danego dostawcy (dostawca) @produkty
+8) wypsanie pracownikow,mmajcy kiedykowliek premie(id_premia)
+9) 
+10)
+
+VIEWS (10):
+1) 
+2)
+3)
+4)
+5)
+6)
+7)
+8)
+9)
+10)
+
+PROCEDURES (10):
+1)sprzedarz towaru "kasa" (@jaki towar, @iloœæ, getdate());
+2)uzupe³nienie magazynu (@towar, @iloœæ);
+3)danie_premii(id_pracownik, id_premia);
+4)dodanie urlopu(pracownik, data_rozpoczecia, data zakonczenia)
+m:5)sprzedarz us³ugi "kasa" (id_stanowisko, getdate())- warunek jesli zajete to b³¹d
+6)
+7)
+8)
+9)
+10)
