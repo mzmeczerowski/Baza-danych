@@ -1,0 +1,18 @@
+----procedura kupna towaru od dostawcow ----
+CREATE PROCEDURE Zamowienie_towaru(@id_produkt INT ,@ilosc FLOAT)
+AS
+UPDATE Produkty
+SET [stan_magazyn(w kg)] = [stan_magazyn(w kg)] + @ilosc
+WHERE id_produkt = @id_produkt
+---tu dodamy 2,5 litra zubrowki do magazynu ---
+EXEC Zamowienie_towaru 1, 2.5
+-----------------------------------------------
+----procedura dania urlopu danemu pracownikowi na x dni----
+CREATE PROCEDURE Dodaj_urlop (@id_pracownik INT, @na_ile_dni INT)
+AS
+DECLARE @doKiedy DATE
+SET @doKiedy = (SELECT GETDATE() + @na_ile_dni)
+INSERT INTO Urlopy VALUES (@id_pracownik,CAST(GETDATE() AS DATE),@doKiedy)
+----dodamy urlop pracownikowi na 5 dni ----
+EXEC Dodaj_urlop 1,5
+--------------------------------------------------
