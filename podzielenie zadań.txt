@@ -23,6 +23,8 @@ FUNCTIONS (10):
 10)FUnkcja wypisujaca dane pracownikow bedacych na imprezach danego artysty (@id_artysta)
 11)
 12)Funkcja wypisujaca na ilu imprezach byl artysta
+13)
+14)Funkcja liczaca dzienny obrot na danej kasie
 
 VIEWS (10):
 1) 
