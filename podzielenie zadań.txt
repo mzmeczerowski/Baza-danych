@@ -3,7 +3,7 @@ TRIGGERS (10):
 2) stan magazynu(stan magazynu - ilosc * zamuwienie);
 3) informacja gdy ilość towaru <= 30)
 4) stanowiska(czy wolne)
-5) 
+5) CZY MOŻE BYĆ --- Po anulowaniu zamowienia, powrot do stanu kasy i powrót do stanu magazynu. (Może być Marceliusz??)
 6)
 7)
 8)
