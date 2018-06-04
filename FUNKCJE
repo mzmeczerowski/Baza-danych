@@ -49,3 +49,16 @@ WHERE PR.id_premii = @id_premia
 SELECT * FROM dbo.kto_mial_premie(4) AS Premiowani
 
 ---------------------------------------------------------------------------------------
+CREATE FUNCTION pracownicy_na_imprezie_artysty (@id_artysta INT)
+RETURNS TABLE
+AS
+RETURN (
+SELECT P.imie,P.nazwisko,SP.nazwa_stanowiska,I.nazwaImprezy,A.nazwa FROM StanowiskaPracy SP 
+JOIN Pracownicy P ON SP.id_stanowisko=P.id_stanowisko
+JOIN Impreza_pracownicy IP ON P.id_pracownik=IP.id_pracownik
+JOIN Impreza I ON IP.id_impreza=I.id_impreza
+JOIN Impreza_artysci IA ON I.id_impreza=IA.id_impreza
+JOIN Artysci A ON IA.id_artysta= A.id_artysta
+ WHERE A.id_artysta = @id_artysta
+ )
+ SELECT * FROM pracownicy_na_imprezie_artysty(5) AS Pracownicy
