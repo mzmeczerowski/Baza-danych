@@ -20,7 +20,9 @@ FUNCTIONS (10):
 7) wypisz wszystkie produkty od danego dostawcy (dostawca) @produkty
 8) wypsanie pracownikow,mmajcy kiedykowliek premie(id_premia)
 9) 
-10)
+10)FUnkcja wypisujaca dane pracownikow bedacych na imprezach danego artysty (@id_artysta)
+11)
+12)
 
 VIEWS (10):
 1) 
