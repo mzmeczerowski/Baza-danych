@@ -16,3 +16,49 @@ INSERT INTO Urlopy VALUES (@id_pracownik,CAST(GETDATE() AS DATE),@doKiedy)
 ----dodamy urlop pracownikowi na 5 dni ----
 EXEC Dodaj_urlop 1,5
 --------------------------------------------------
+------zakonczenie uslugi przy danym stanowisko (po oddaniu bili, rzutek czy pileczek) ----
+CREATE PROCEDURE ZwolnijStanowisko (@nrStanowiska INT)
+AS
+IF (SELECT czy_wolne FROM StanowiskaUslug WHERE id_stanowisko = @nrStanowiska) = 0 
+BEGIN
+UPDATE StanowiskaUslug
+SET czy_wolne = 1
+WHERE id_stanowisko = @nrStanowiska
+END
+ELSE
+PRINT 'Stanowisko jest wolne!!!'  ---Przy probie wykonanie tego na wolnym stanowisku wyskakuje komunikat ---
+---przyklad---
+EXEC ZwolnijStanowisko 3
+SELECT * FROM StanowiskaUslug
+----------------------------------------------------------------
+---Procedura doda artyste do bazy danych a nastepnie zamieni wybranego artyste na wybranym koncercie
+
+CREATE PROCEDURE ZmienArtyste (@nazwa VARCHAR(20),@kontakt INT, @profesja VARCHAR(20), @placa MONEY, @id_impreza INT, @id_artysta INT)
+AS
+INSERT INTO Artysci VALUES (@nazwa,@kontakt,@profesja,@placa)
+UPDATE Impreza_artysci
+SET id_artysta = (SELECT TOP 1 id_artysta FROM Artysci ORDER BY id_artysta DESC)
+WHERE id_impreza = @id_impreza AND id_artysta = @id_artysta
+--przyklad--
+EXEC ZmienArtyste Marianek,664855555,Piosenkarz,3000,2,4
+SELECT * FROM Artysci JOIN Impreza_artysci ON Artysci.id_artysta=Impreza_artysci.id_artysta
+-------------------------------------------------------------------------------
+---Procedura ta doda pracownika o najmniejszej ilosci godzin w danym miesiacu (podac nalezy dzien wyplaty) do nastepnej imprezy (jesli go nie 
+---ma i takze impreza jest juz w bazie danych----
+CREATE PROCEDURE DodajPracownika (@data_wyplaty DATE)
+AS
+IF (SELECT TOP 1 data_imprezy FROM Impreza Order by id_impreza DESC ) > GETDATE()
+BEGIN
+DECLARE @id_pracownik INT
+SET @id_pracownik = (SELECT TOP 1 id_pracownik FROM Wyplata WHERE data_wyplaty = @data_wyplaty ORDER BY ilosc_godzin )
+DECLARE @id_impreza INT
+SET @id_impreza = (SELECT TOP 1 id_impreza FROM Impreza ORDER BY id_impreza DESC)
+IF NOT EXISTS (SELECT id_pracownik FROM Impreza_pracownicy WHERE id_pracownik = @id_pracownik AND id_impreza = @id_impreza)
+INSERT INTO Impreza_pracownicy VALUES (@id_impreza,@id_pracownik)
+ELSE
+PRINT 'Pracownik jest juz na imprezie'
+END
+ELSE
+PRINT 'Nie ma nastepnej imprezy w bazie'
+---przyklad--
+EXEC DodajPracownika '2018-06-01'
