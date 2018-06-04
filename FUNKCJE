@@ -1,0 +1,51 @@
+--Funckja sprawdzajaca czy jest wolne stanowisko do np. gry w bilard --
+CREATE FUNCTION czy_wolne_stanowisko(@id_usluga INT)
+RETURNS VARCHAR(50)
+AS
+BEGIN
+DECLARE @Wynik VARCHAR(50)
+IF EXISTS (SELECT czy_wolne FROM StanowiskaUslug WHERE id_usluga=@id_usluga AND czy_wolne = 1 ) 
+SET @Wynik='Jest wolne stanowisko'
+ELSE
+SET @Wynik='Nie ma wolnego stanowiska'
+RETURN @Wynik
+END
+
+SELECT dbo.czy_wolne_stanowisko (3) AS Czy_wolne
+----------------------------------------------------------------------------
+-----Funckja wypisujaca dane pracownikow majacych wiecej na godzine niz podana kwota -------------
+CREATE FUNCTION zarabiaja_wiecej_niz(@placa MONEY)
+RETURNS TABLE
+AS
+RETURN 
+(SELECT P.imie,P.nazwisko,S.stawka_godzinowa,S.nazwa_stanowiska FROM Pracownicy P JOIN StanowiskaPracy S ON P.id_stanowisko=S.id_stanowisko
+WHERE S.stawka_godzinowa > @placa)
+
+SELECT * FROM
+zarabiaja_wiecej_niz(20) AS Zarobki
+------------------------------------------------------------------------------
+---------Funkcja wypisujaca ilosc zamowien danego produktu w danym dniu ------ 
+CREATE FUNCTION ilosc_w_danym_dniu(@id_produktu INT, @Data DATE )
+RETURNS INT
+AS 
+BEGIN
+DECLARE @Ilosc INT
+SET @Ilosc = (SELECT SUM(ilosc) FROM Zamowienia WHERE id_produkt = @id_produktu AND (CAST(data_zamowienia AS DATE)) = @Data)
+RETURN @Ilosc
+END
+GO
+SELECT dbo.ilosc_w_danym_dniu(1,'2018-01-01') AS Ilosc
+-----------------------------------------------------------------------------
+---Funckja wypisujaca pracownikow majacych kiedykolwiek dany rodzaj premii(id_premia)----
+CREATE FUNCTION kto_mial_premie(@id_premia INT)
+RETURNS TABLE
+AS
+RETURN (
+SELECT P.imie,P.nazwisko,W.data_wyplaty,PR.id_premii,PR.opis FROM Pracownicy P 
+JOIN Wyplata W ON P.id_pracownik = W.id_pracownik 
+JOIN Premia PR ON W.id_premia = PR.id_premii
+WHERE PR.id_premii = @id_premia
+)
+SELECT * FROM dbo.kto_mial_premie(4) AS Premiowani
+
+---------------------------------------------------------------------------------------
