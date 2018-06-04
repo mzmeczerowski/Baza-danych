@@ -62,3 +62,14 @@ JOIN Artysci A ON IA.id_artysta= A.id_artysta
  WHERE A.id_artysta = @id_artysta
  )
  SELECT * FROM pracownicy_na_imprezie_artysty(5) AS Pracownicy
+ --------------------------------------------------------
+---Funkcja wypisujaca na ilu imprezach byl dany artysta ----
+ CREATE FUNCTION na_ilu_imprezach (@id_artysta INT )
+ RETURNS INT
+ AS
+ BEGIN
+ DECLARE @Ile INT
+ SET @Ile = (SELECT COUNT(*) FROM Impreza_artysci WHERE id_artysta = @id_artysta)
+ RETURN @Ile
+ END
+ ------------------------------------------------------------------
