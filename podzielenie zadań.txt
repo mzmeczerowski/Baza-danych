@@ -44,4 +44,4 @@ m:5)sprzedarz usługi "kasa" (id_stanowisko, getdate())- warunek jesli zajete to
 7)
 8)Zamiana artystów na imprezie (Artysta zrezygnował, trzeba szybko wziac kogoś innego) (Doda artyste do bazy i zamieni) 
 9)
-10)
+10)Procedura ta doda 3 pracownikow o najmniejszej ilosci godzin w danym miesiacu (dniu wyplaty) do nastepnej imprezy
