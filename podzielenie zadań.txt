@@ -22,7 +22,7 @@ FUNCTIONS (10):
 9) 
 10)FUnkcja wypisujaca dane pracownikow bedacych na imprezach danego artysty (@id_artysta)
 11)
-12)
+12)Funkcja wypisujaca na ilu imprezach byl artysta
 
 VIEWS (10):
 1) 
