@@ -6,7 +6,7 @@ CREATE TRIGGER stan_Kasy on Zamowienia
 AFTER INSERT 
 AS
 BEGIN
-IF (SELECT id_zamowienie FROM inserted) IS NOT NULL
+IF (SELECT id_produkt FROM inserted) IS NOT NULL
 BEGIN
 DECLARE @nowe table (ilosc int, id_kasa int, cena money)
 insert into @nowe SELECT ins.ilosc, ins.id_kasa, pro.cena_za_porcje
@@ -14,6 +14,17 @@ FROM inserted as ins join Produkty as pro on ins.id_produkt = pro.id_produkt
 
 UPDATE Kasa SET stan+=(select ilosc*cena from @nowe)
 WHERE id_kasa = (SELECT id_kasa FROM @nowe)
+END
+IF (SELECT id_stanowisko FROM inserted) IS NOT NULL
+BEGIN
+DECLARE @nowe1 table (ilosc int, id_kasa int, cena money)
+insert into @nowe1 SELECT ins.ilosc, ins.id_kasa, usl.cena
+FROM inserted as ins
+join StanowiskaUslug as sta on ins.id_stanowisko = sta.id_stanowisko
+join Usługa as usl on sta.id_usluga = usl.id_usluga
+
+UPDATE Kasa SET stan+=(select ilosc*cena from @nowe1)
+WHERE id_kasa = (SELECT id_kasa FROM @nowe1)
 END
 END
 GO
