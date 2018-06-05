@@ -11,7 +11,7 @@ Xm-1) stan kasy(ilosc pieniedzy w kasie);
  j-2) stan magazynu(stan magazynu - ilosc * zamuwienie) -;
  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxm3) informacja gdy ilość towaru <= 30) to juz jest w pk 8- Patrz co wymyslasz xD
  xj-4) stanowiska(czy wolne)
- -5) Po anulowaniu zamowienia, powrot do stanu kasy i powrót do stanu magazynu. 
+ Xm5) Po anulowaniu zamowienia, powrot do stanu kasy i powrót do stanu magazynu. 
  xj-6) przy zwalnianiu pracownika upewnianie sie czy stanowisko nie bedzie puste
  -7) dodawanie premi w 12 miesiącu wszystkim pracownikom
  xj-8) Przy zamowieniu czegoś co jest mniej niż 5 kg w magazynie ma wyskoczyc komunikat
