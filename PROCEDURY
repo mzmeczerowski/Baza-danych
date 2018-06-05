@@ -48,6 +48,17 @@ EXEC ZmienArtyste Marianek,664855555,Piosenkarz,3000,2,4
 SELECT * FROM Artysci JOIN Impreza_artysci ON Artysci.id_artysta=Impreza_artysci.id_artysta
 -------------------------------------------------------------------------------
 PROCEDURA NR 10
+------------------------------------------------------------------------
+----Procedura zwiekszajaca o podany procent wynagrodzenie danego stanowiska ---------------
+CREATE PROCEDURE zwieksz_zarobki (@procent FLOAT,@id_stanowisko INT)
+AS
+UPDATE StanowiskaPracy
+SET stawka_godzinowa = stawka_godzinowa + (stawka_godzinowa * @procent)/100
+WHERE id_stanowisko = @id_stanowisko
+----Przyklad-----
+EXEC zwieksz_zarobki 20,11
+------------------------------------------------
+PROCEDURA NR 11
 ---Procedura ta doda pracownika o najmniejszej ilosci godzin w danym miesiacu (podac nalezy dzien wyplaty) do nastepnej imprezy (jesli go nie 
 ---ma i takze impreza jest juz w bazie danych----
 CREATE PROCEDURE DodajPracownika (@data_wyplaty DATE)
