@@ -13,46 +13,46 @@ Xm-1) stan kasy(ilosc pieniedzy w kasie);
  xj-4) stanowiska(czy wolne)
  Xm5) Po anulowaniu zamowienia, powrot do stanu kasy i powrót do stanu magazynu. 
  xj-6) przy zwalnianiu pracownika upewnianie sie czy stanowisko nie bedzie puste
- -7) dodawanie premi w 12 miesiącu wszystkim pracownikom
+ XM7) dodawanie premi w 12 miesiącu wszystkim pracownikom
  xj-8) Przy zamowieniu czegoś co jest mniej niż 5 kg w magazynie ma wyskoczyc komunikat
- -9) usuwanie starszych zamówień niż 5(opcjonalnie) lat.
+ XM9) usuwanie starszych zamówień niż 5(opcjonalnie) lat.
  xj-10) Wlaczanie kasy przy zamowieniu z danej kasy (gdy byla nieaktywna).
- -11) pracownik nie moze miec wiecej niż 500 h w miesiącu.
+ -XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX11) pracownik nie moze miec wiecej niż 500 h w miesiącu. ----  TO MOZNA ZROBIC ZWYKŁYM CHECK !!!
 
 FUNCTIONS (10):
- -1) ilość produktu w magazynie - stan(produkt);
+ XM-1) ilość produktu w magazynie - stan(produkt);
  xj-2) wyswietl wolne stanowaiska danej usługi - czy_wolne_stanowisko(id_usługa) @bool;
- -3) wypłaty_pracowników(data_wypłaty);
+ XM-3) wypłaty_pracowników(data_wypłaty);
  xj-4) pracownicy zarabiajacy wiecej niż(x);
- -5) pracownicy_na_imprezie(impreza) @pracownicy;
+ XM-5) pracownicy_na_imprezie(impreza) @pracownicy;
  xj-6) ilośc_zamuwien_produktu_w_danym_dniu(data, id_produktu) @table
- -7) wypisz wszystkie produkty od danego dostawcy (dostawca) @produkty
+ XM-7) wypisz wszystkie produkty od danego dostawcy (dostawca) @produkty
  xj-8) wypsanie pracownikow,mmajcy kiedykowliek premie(id_premia)
- -9) pracownicy co w danym momencie są dostępni, czyli nie mają urlopu();
+ XM-9) pracownicy co w danym momencie są dostępni, czyli nie mają urlopu();
  xj-10)FUnkcja wypisujaca dane pracownikow bedacych na imprezach danego artysty (@id_artysta)
- -11) ile osob jest na danym stanowisku pracy()
+ XM-11) ile osob jest na danym stanowisku pracy()
  xj-12)Funkcja wypisujaca na ilu imprezach byl artysta
- -13) aktualny stan wszystkich kas() @stan return;
+ XM-13) aktualny stan wszystkich kas() @stan return;
  xj-14)Funkcja liczaca dzienny obrot na danej kasie:
- -15) liczy ktory pracownik najwiecej sprzedał na kasie(miesiąc, dzień, rok) return;
+ XM-15) liczy ktory pracownik najwiecej sprzedał na kasie(miesiąc, dzień, rok) return;
  xj-16) ile kosztowali artysci w danych rramach cxzasowych (@od_kiedy,@do_kiedy)
- -17) Wypisz uslugę najczęściej sprzedawana w danych ramach czasowych (@od_kiedy,@do_kiedy)
+ XM-17) Wypisz uslugę najczęściej sprzedawana w danych ramach czasowych (@od_kiedy,@do_kiedy)
  xj-18)Funkcja wypisujaca dane pracowników zamieszkałych w danym miescie  (@miasto)
- 19)Wypisz produkt na ktorym zrobiono najwiekszy obrot w danym mieiacu (@miesiac)
+ XM-19)Wypisz produkt na ktorym zrobiono najwiekszy obrot w danym mieiacu (@miesiac)
  xj-20)Wypisz ile klub zarobił od początku na danej kategorii produktu (@kategoria)
  
  VIEWS (2)
-  -1)Wypisz nazwe i numery telefonu artystow ktorzy jeszcze nie byli na zadnej imprezie w klubie (VIEW)
+XM-1)Wypisz nazwe i numery telefonu artystow ktorzy jeszcze nie byli na zadnej imprezie w klubie (VIEW)
 xj-2 Wypisz produkty i ile ich sprzedano w ostatnim miesiącu (VIEW)
 PROCEDURES (10):
- -1)sprzedarz towaru "kasa" (@jaki towar, @ilość, getdate());
+ M-1)sprzedarz towaru "kasa" (@jaki towar, @ilość, getdate());
  xj-2)uzupełnienie magazynu (@towar, @ilość);
- -3)danie_premii(id_pracownik, id_premia);
+ M-3)danie_premii(id_pracownik, id_premia);
  xj-4)dodanie urlopu(pracownik, data_rozpoczecia, data zakonczenia)
-m-5)sprzedarz usługi "kasa" (id_stanowisko, getdate())- warunek jesli zajete to błąd
+ M-5)sprzedarz usługi "kasa" (id_stanowisko, getdate())- warunek jesli zajete to błąd
  xj-6)Zwalnianie stanowiska po opuszczeniu przez graczy stanowiska usług (id_stanowisko) - warunek jesli wolne to bląd
- -7) zatrudnienie pracownika(wszytskie dane pracownika)
+ M-7) zatrudnienie pracownika(wszytskie dane pracownika)
  xj-8)Zamiana artystów na imprezie (Artysta zrezygnował, trzeba szybko wziac kogoś innego) (Doda artyste do bazy i zamieni) 
- -9) zwolnienie Pracownika
+ M-9) zwolnienie Pracownika
  xj-10) zwiekszanie wypłaty (stanowiska, procent) - jesli 100% to bez zmian
  xj-11)Procedura ta doda pracownika o najmniejszej ilosci godzin w danym miesiacu (podac nalezy dzien wyplaty) do nastepnej imprezy (jesli      go nie ma i takze impreza jest juz w bazie danych
