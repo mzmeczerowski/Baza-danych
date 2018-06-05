@@ -1,3 +1,4 @@
+FUNKCJA NR 2
 -Funckja sprawdzajaca czy jest wolne stanowisko do np. gry w bilard --
 CREATE FUNCTION czy_wolne_stanowisko(@id_usluga INT)
 RETURNS VARCHAR(50)
@@ -13,6 +14,7 @@ END
 
 SELECT dbo.czy_wolne_stanowisko (3) AS Czy_wolne
 ----------------------------------------------------------------------------
+FUNKCJA NR 4
 -----Funckja wypisujaca dane pracownikow majacych wiecej na godzine niz podana kwota -------------
 CREATE FUNCTION zarabiaja_wiecej_niz(@placa MONEY)
 RETURNS TABLE
@@ -24,6 +26,7 @@ WHERE S.stawka_godzinowa > @placa)
 SELECT * FROM
 zarabiaja_wiecej_niz(20) AS Zarobki
 ------------------------------------------------------------------------------
+FUNKCJA NR 6
 ---------Funkcja wypisujaca ilosc zamowien danego produktu w danym dniu ------ 
 CREATE FUNCTION ilosc_w_danym_dniu(@id_produktu INT, @Data DATE )
 RETURNS INT
@@ -36,6 +39,7 @@ END
 GO
 SELECT dbo.ilosc_w_danym_dniu(1,'2018-01-01') AS Ilosc
 -----------------------------------------------------------------------------
+FUNKCJA NR 8
 ---Funckja wypisujaca pracownikow majacych kiedykolwiek dany rodzaj premii(id_premia)----
 CREATE FUNCTION kto_mial_premie(@id_premia INT)
 RETURNS TABLE
@@ -47,8 +51,34 @@ JOIN Premia PR ON W.id_premia = PR.id_premii
 WHERE PR.id_premii = @id_premia
 )
 SELECT * FROM dbo.kto_mial_premie(4) AS Premiowani
-
+--------------------------------------------------------
+FUNKCJA NR 10
+--Funkcja wypisuje dane pracownikow bedacych na imprezie danego artysty ------
+CREATE FUNCTION Artysta_a_pracownicy (@id_artysta INT)
+RETURNS TABLE
+AS
+RETURN (
+SELECT P.* FROM Pracownicy P JOIN Impreza_pracownicy IMP ON P.id_pracownik = IMP.id_pracownik
+JOIN Impreza I ON IMP.id_impreza = I.id_impreza
+JOIN Impreza_artysci IA ON I.id_impreza = IA.id_artysta
+WHERE IA.id_artysta = @id_artysta
+)
+---Przyklad-------
+SELECT * FROM Artysta_a_pracownicy(2)
+--------------------------------------------------------------------------------
+FUNKCJA NR 12
+-----Funkcja wypisuje na ilu imprezach byl artysta ------
+CREATE FUNCTION Na_ilu_imprezach (@id_artysta INT)
+RETURNS INT
+AS
+BEGIN
+RETURN (SELECT COUNT(*) FROM Impreza_artysci WHERE id_artysta = @id_artysta)
+END
+-------------------Przyklad ---------------------------
+SELECT dbo.Na_ilu_imprezach (1) AS Na_ilu
+--------------------------------------------------------
 ---------------------------------------------------------------------------------------
+FUNKCJA NR 14
 ----Funckja liczaca dzienny obrot na danej kasie ------------
 DROP FUNCTION dbo.obrot_kasy
 CREATE FUNCTION	obrot_kasy(@id_kasa INT, @data DATE)
@@ -76,6 +106,7 @@ END
 ----Przyklad ponizej----
 SELECT dbo.obrot_kasy(1,'2018-06-05') AS Obrot
 -------------------------------------------------------
+FUNKCJA NR 16
 -----Funkcja liczaca ile kosztowali artysci na imprezy w danych ramach czasowych ----
 CREATE FUNCTION Ile_kosztowali_artysci (@odKiedy DATE, @doKiedy DATE)
 RETURNS FLOAT
@@ -89,7 +120,7 @@ END
 ----przyklad----
 SELECT dbo.Ile_kosztowali_artysci ('2018-05-26','2018-06-10' ) AS suma
 -----------------------------------------------------------------------------------------
- 
+ FUNKCJA NR 18
 ---------Funkcja wypisujaca dane pracowników zamieszkałych w danym miescie ----------
 CREATE FUNCTION pracownicy_z_miasta (@miasto VARCHAR(20))
 RETURNS TABLE
@@ -101,6 +132,7 @@ WHERE miasto = @miasto
 ------ Przyklad -----------
 SELECT * FROM pracownicy_z_miasta ('Koscierzyna') 
 ----------------------------------------------------------------------------
+FUNKCJA NR 20
 ----- Funckja wypisujaca ile klub obrocil pieniedzy od poczatku na danej kategorii produktu -----------
 CREATE FUNCTION zarobki_kategorii(@id_kategoria INT)
 RETURNS FLOAT
