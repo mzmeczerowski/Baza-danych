@@ -1,0 +1,41 @@
+USE KlubRozrywki
+--------Wyzwalacz aktualizujacy stan magazynu po zakupie --------
+CREATE TRIGGER stan_magazynu ON Zamowienia
+AFTER INSERT
+AS
+BEGIN
+IF (SELECT id_produkt FROM inserted) IS NOT NULL
+BEGIN
+DECLARE @Ilosc FLOAT
+SET @Ilosc = (SELECT ilosc FROM inserted) * (SELECT gramatura_porcji FROM Produkty P JOIN inserted I ON P.id_produkt=I.id_produkt )/1000
+UPDATE Produkty
+SET [stan_magazyn(w kg)] = [stan_magazyn(w kg)] - @Ilosc
+WHERE id_produkt = (SELECT id_produkt FROM inserted)
+PRINT 'Produkt sprzedano poprawnie'
+END 
+END
+GO
+SELECT * FROM Produkty
+GO
+INSERT INTO Zamowienia VALUES(2,NULL,2,2,GETDATE())
+SELECT * FROM Produkty
+---------------------Wyzwalacz zmieniajacy stan satnowiska po zamowieniu *jesli jest juz zajete nie pozwala na zakup -------------
+CREATE TRIGGER zajete ON Zamowienia
+AFTER INSERT
+AS
+BEGIN
+IF (SELECT id_stanowisko FROM inserted) IS NOT NULL 
+BEGIN
+	IF (SELECT S.czy_wolne FROM StanowiskaUslug S join inserted I ON S.id_stanowisko=I.id_stanowisko) = 1
+	BEGIN
+	UPDATE StanowiskaUslug
+	SET czy_wolne = 0
+	WHERE id_stanowisko = (SELECT id_stanowisko FROM inserted)
+	PRINT 'Stanowisko zostalo zajete'
+	END
+	ELSE
+	PRINT 'Stanowisko jest juz zajete'
+END
+END
+
+SELECT * FROM Zamowienia
