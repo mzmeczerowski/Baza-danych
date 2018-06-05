@@ -37,6 +37,7 @@ GO
 SELECT dbo.ilosc_w_danym_dniu(1,'2018-01-01') AS Ilosc
 -----------------------------------------------------------------------------
 ---Funckja wypisujaca pracownikow majacych kiedykolwiek dany rodzaj premii(id_premia)----
+
 CREATE FUNCTION kto_mial_premie(@id_premia INT)
 RETURNS TABLE
 AS
@@ -73,3 +74,30 @@ JOIN Artysci A ON IA.id_artysta= A.id_artysta
  RETURN @Ile
  END
  ------------------------------------------------------------------
+ ----Funckja liczaca dzienny obrot na danej kasie ------------
+DROP FUNCTION dbo.obrot_kasy
+CREATE FUNCTION	obrot_kasy(@id_kasa INT, @data DATE)
+RETURNS FLOAT
+AS
+BEGIN
+DECLARE @Ilosc_usluga FLOAT
+DECLARE @Ilosc_produkt FLOAT
+
+SET @Ilosc_produkt = (SELECT SUM( Z.ilosc * P.cena_za_porcje) 
+Sumka FROM Zamowienia Z JOIN Produkty P ON Z.id_produkt=P.id_produkt 
+WHERE Z.id_kasa= @id_kasa AND CAST(Z.data_zamowienia AS DATE) = @data) 
+IF @Ilosc_produkt IS NULL
+	SET @Ilosc_produkt = 0
+
+SET @Ilosc_usluga = (SELECT SUM(Z.ilosc * U.cena) 
+Sumka FROM Zamowienia Z JOIN StanowiskaUslug SU ON Z.id_stanowisko=SU.id_stanowisko 
+JOIN Usługa U On SU.id_usluga= U.id_usluga
+WHERE Z.id_kasa= @id_kasa AND CAST(Z.data_zamowienia AS DATE) = @data)
+IF @Ilosc_usluga IS NULL
+	SET @Ilosc_usluga = 0
+
+RETURN @Ilosc_usluga + @Ilosc_produkt
+END
+----Przyklad ponizej----
+SELECT dbo.obrot_kasy(1,'2018-06-05') AS Obrot
+-------------------------------------------------------
