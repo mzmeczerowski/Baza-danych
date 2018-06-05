@@ -1,3 +1,4 @@
+!!!!!!!!!!!!!!!WAŻNE WAŻNE WAŻNE !!!!!!!!!!!!!!!! USUNĄLEM KOLUMNE "PROMOCJA" Z ZAMÓWIEŃ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 TRIGGERS (10):
  -1) stan kasy(ilosc pieniedzy w kasie);
  j-2) stan magazynu(stan magazynu - ilosc * zamuwienie) -;
@@ -28,10 +29,11 @@ FUNCTIONS (10):
  j-14)Funkcja liczaca dzienny obrot na danej kasie:
  -15) liczy ktory pracownik najwiecej sprzedał na kasie(miesiąc, dzień, rok) return;
  j-16) ile kosztowali artysci w danych rramach cxzasowych (@od_kiedy,@do_kiedy)
- -17) Promocja na drinki (ile obniżki)j
- j-18) 
- -19)
- j-20)
+ -17) Wypisz uslugę najczęściej sprzedawana w danych ramach czasowych (@od_kiedy,@do_kiedy)
+ j-18) Wypisz produkt który był najczesciej sprzedawany w danych ramach czasowych(@od_kiedy,@do_kiedy)
+ -19)Wypisz nazwe i numery telefonu artystow ktorzy jeszcze nie byli na zadnej imprezie w klubie (VIEW)
+ j-20)Wypisz stanowiska pracy, pracowników zamieszkałych w danym mieście (@miasto)
+ 21)Wypisz produkt na ktorym zrobiono najwiekszy obrot w danym mieiacu (@miesiac)
 
 
 PROCEDURES (10):
