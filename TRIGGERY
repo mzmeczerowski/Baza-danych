@@ -1,5 +1,6 @@
 USE KlubRozrywki
 --||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||--
+TRIGGER NR 1
 ---Trigger Stan Kasy ---
 CREATE TRIGGER stan_Kasy on Zamowienia
 AFTER INSERT 
@@ -17,6 +18,7 @@ END
 END
 GO
 --|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||--
+TRIGGER NR 2
 --------Wyzwalacz aktualizujacy stan magazynu po zakupie --------
 CREATE TRIGGER stan_magazynu ON Zamowienia
 AFTER INSERT
@@ -37,6 +39,8 @@ SELECT * FROM Produkty
 GO
 INSERT INTO Zamowienia VALUES(2,NULL,2,2,GETDATE())
 SELECT * FROM Produkty
+-------------------------------------------------------------------------------------------------
+TRIGGER NR 4
 ---------------------Wyzwalacz zmieniajacy stan satnowiska po zamowieniu *jesli jest juz zajete nie pozwala na zakup -------------
 CREATE TRIGGER zajete ON Zamowienia
 AFTER INSERT
@@ -58,6 +62,7 @@ END
 
 SELECT * FROM Zamowienia
 ------------------------------------------
+TRIGGER NR 6
 ---Wyzwalacz przy zwalnianiu pracownika upewnia sie czy jest jakas osoba na to samo stanowisko ------------
 CREATE TRIGGER czy_jest_inny_pracownik ON Pracownicy
 INSTEAD OF DELETE
@@ -73,3 +78,43 @@ PRINT 'NIE MOZNA USUNAC PRACOWNIKA!!! NIE MAMY NIKOGO NA JEGO MIEJSCE !!!!'
 END
  ---------------------------------------------------------------------
  ---
+ --------------------------------------------------------------------------------------------
+TRIGGER NR 8
+------Przy zamowieniu czegos czego jest mniej niż 5 kg w magazynie wyskakuje komunikat=----
+CREATE TRIGGER gdy_malo ON Zamowienia
+AFTER INSERT
+AS
+BEGIN
+IF (SELECT id_produkt from inserted) IS NOT NULL
+BEGIN
+	DECLARE @id_produktu INT
+	DECLARE @stan_magazyn FLOAT
+	SET @id_produktu = (SELECT id_produkt FROM inserted)
+	SET @stan_magazyn = (SELECT [stan_magazyn(w kg)] FROM Produkty WHERE id_produkt = @id_produktu)
+	IF  @stan_magazyn < 5
+		PRINT 'DOMÓW PRODUKT ! JEST GO TYLKO' + CAST(@stan_magazyn AS VARCHAR(50)) + ' kg'
+	END
+END
+INSERT INTO Zamowienia VALUES (3,25,NULL,1,GETDATE())
+
+ TRIGGER NR 10
+  ---------------------------------------------------------------------
+ ------Włacza kase gdy chce sie z niej cos zamowic
+ CREATE TRIGGER wlacz_kase ON Zamowienia
+AFTER INSERT
+AS
+BEGIN
+DECLARE @id_kasa TINYINT
+SET @id_kasa = (SELECT id_kasa FROM inserted)
+IF (SELECT czy_aktywna FROM Kasa WHERE id_kasa = @id_kasa) = 0
+BEGIN
+UPDATE Kasa
+SET czy_aktywna = 1
+WHERE id_kasa = @id_kasa
+PRINT 'Kasa zostala uruchomiona'
+END
+END 
+INSERT INTO Zamowienia VALUES (3,9,NULL,3,GETDATE())
+
+
+
