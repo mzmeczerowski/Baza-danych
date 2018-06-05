@@ -132,8 +132,17 @@ PRINT 'NIE MOZNA USUNAC PRACOWNIKA!!! NIE MAMY NIKOGO NA JEGO MIEJSCE !!!!'
 END
 --|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 TRIGGER NR 7
------przyznanie premi swiątecznej-----------
-
+-----przyznanie premi swiątecznej-----------------------------
+CREATE TRIGGER premia_swiateczna ON wyplata
+AFTER INSERT
+AS
+IF DATEPART(MONTH, (SELECT data_wyplaty FROM inserted)) = 12
+BEGIN
+UPDATE Wyplata
+SET id_premia = 3 --Premia świąteczna
+WHERE MONTH(data_wyplaty) = 12
+END
+GO
 --||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 TRIGGER NR 8
 ------Przy zamowieniu czegos czego jest mniej niż 5 kg w magazynie wyskakuje komunikat=----
@@ -155,7 +164,16 @@ INSERT INTO Zamowienia VALUES (3,25,NULL,1,GETDATE())
 --|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 TRIGGER NR 9
 ---------usuwanie starszych zamówień niż 5 lat--------------------
-
+CREATE TRIGGER czyszczenie_pamieci ON Zamowienia
+AFTER INSERT
+AS
+WHILE (SELECT MIN(data_zamowienia) FROM Zamowienia) < GETDATE()-YEAR(5)
+BEGIN
+DELETE Zamowienia
+WHERE data_zamowienia = (SELECT MIN(DATA_ZAMOWIENIA) FROM ZAMOWIENIA WHERE data_zamowienia < GETDATE()-YEAR(5))
+PRINT 'Z TABELI ZAMOWIENIA ZOSTAŁ USUNIĘTY REKORD STARSZY NIŻ 5 LAT'
+END
+GO
 --||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
  TRIGGER NR 10
  ------Włacza kase gdy chce sie z niej cos zamowic
@@ -174,6 +192,9 @@ PRINT 'Kasa zostala uruchomiona'
 END
 END 
 INSERT INTO Zamowienia VALUES (3,9,NULL,3,GETDATE())
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+TRIGGER NR 11
+------
 
 
 
