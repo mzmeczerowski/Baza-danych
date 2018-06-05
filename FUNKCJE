@@ -1,3 +1,12 @@
+FUNKCJA NR 1
+--ilość produktu w magazynie - stan(produkt)---
+CREATE FUNCTION stan(@nazwaproduktu VARCHAR(30))
+RETURNS INT
+BEGIN
+RETURN (SELECT [stan_magazyn(w kg)] FROM Produkty WHERE nazwa_produktu = @nazwaproduktu)
+END
+GO
+--------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 2
 -Funckja sprawdzajaca czy jest wolne stanowisko do np. gry w bilard --
 CREATE FUNCTION czy_wolne_stanowisko(@id_usluga INT)
@@ -13,7 +22,11 @@ RETURN @Wynik
 END
 
 SELECT dbo.czy_wolne_stanowisko (3) AS Czy_wolne
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
+FUNKCJA NR 3
+--
+
+--------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 4
 -----Funckja wypisujaca dane pracownikow majacych wiecej na godzine niz podana kwota -------------
 CREATE FUNCTION zarabiaja_wiecej_niz(@placa MONEY)
@@ -25,7 +38,11 @@ WHERE S.stawka_godzinowa > @placa)
 
 SELECT * FROM
 zarabiaja_wiecej_niz(20) AS Zarobki
-------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
+FUNKCJA NR 5
+--
+
+--------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 6
 ---------Funkcja wypisujaca ilosc zamowien danego produktu w danym dniu ------ 
 CREATE FUNCTION ilosc_w_danym_dniu(@id_produktu INT, @Data DATE )
@@ -38,7 +55,11 @@ RETURN @Ilosc
 END
 GO
 SELECT dbo.ilosc_w_danym_dniu(1,'2018-01-01') AS Ilosc
------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
+FUNKCJA NR 7
+--
+
+--------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 8
 ---Funckja wypisujaca pracownikow majacych kiedykolwiek dany rodzaj premii(id_premia)----
 CREATE FUNCTION kto_mial_premie(@id_premia INT)
@@ -51,7 +72,11 @@ JOIN Premia PR ON W.id_premia = PR.id_premii
 WHERE PR.id_premii = @id_premia
 )
 SELECT * FROM dbo.kto_mial_premie(4) AS Premiowani
---------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
+FUNKCJA NR 9
+--
+
+--------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 10
 --Funkcja wypisuje dane pracownikow bedacych na imprezie danego artysty ------
 CREATE FUNCTION Artysta_a_pracownicy (@id_artysta INT)
@@ -65,7 +90,11 @@ WHERE IA.id_artysta = @id_artysta
 )
 ---Przyklad-------
 SELECT * FROM Artysta_a_pracownicy(2)
---------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
+FUNKCJA NR 11
+--
+
+--------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 12
 -----Funkcja wypisuje na ilu imprezach byl artysta ------
 CREATE FUNCTION Na_ilu_imprezach (@id_artysta INT)
@@ -77,7 +106,11 @@ END
 -------------------Przyklad ---------------------------
 SELECT dbo.Na_ilu_imprezach (1) AS Na_ilu
 --------------------------------------------------------
----------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
+FUNKCJA NR 13
+--
+
+--------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 14
 ----Funckja liczaca dzienny obrot na danej kasie ------------
 DROP FUNCTION dbo.obrot_kasy
@@ -105,7 +138,11 @@ RETURN @Ilosc_usluga + @Ilosc_produkt
 END
 ----Przyklad ponizej----
 SELECT dbo.obrot_kasy(1,'2018-06-05') AS Obrot
--------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
+FUNKCJA NR 15
+--
+
+--------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 16
 -----Funkcja liczaca ile kosztowali artysci na imprezy w danych ramach czasowych ----
 CREATE FUNCTION Ile_kosztowali_artysci (@odKiedy DATE, @doKiedy DATE)
@@ -119,7 +156,11 @@ WHERE I.data_imprezy BETWEEN @odKiedy AND @doKiedy)
 END
 ----przyklad----
 SELECT dbo.Ile_kosztowali_artysci ('2018-05-26','2018-06-10' ) AS suma
------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
+FUNKCJA NR 17
+--
+
+--------------------------------------------------------------------------------------------------------------------------------------
  FUNKCJA NR 18
 ---------Funkcja wypisujaca dane pracowników zamieszkałych w danym miescie ----------
 CREATE FUNCTION pracownicy_z_miasta (@miasto VARCHAR(20))
@@ -131,7 +172,11 @@ WHERE miasto = @miasto
 )
 ------ Przyklad -----------
 SELECT * FROM pracownicy_z_miasta ('Koscierzyna') 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
+FUNKCJA NR 19
+--
+
+--------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 20
 ----- Funckja wypisujaca ile klub obrocil pieniedzy od poczatku na danej kategorii produktu -----------
 CREATE FUNCTION zarobki_kategorii(@id_kategoria INT)
@@ -143,9 +188,12 @@ ON P.id_produkt = Z.id_produkt WHERE P.id_kategoria = @id_kategoria)
 END
 -------------Przyklad-------------------
 SELECT dbo.zarobki_kategorii(1) AS Zarobek
---------------------------------------------------------------------------------------------------------
+----------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------W-I-D-O-K-I------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
+WIDOK NR 1
 ------Widok przedstawiajacy nazwy produktow i ile ich sprzedano w ostatnim miesiacu ----
-------------------VIEW NR 1 --------------------------------------
 CREATE VIEW sprzedane_produkty_w_ostatnim_msc
 AS
 SELECT  Z.id_produkt,P.nazwa_produktu, SUM(ilosc) ilosc_sprzedanych 
@@ -154,3 +202,8 @@ WHERE Z.data_zamowienia BETWEEN  CAST(GETDATE()-30 AS DATE) AND CAST(GETDATE() A
 GROUP BY Z.id_produkt,P.nazwa_produktu
 
 SELECT * FROM sprzedane_produkty_w_ostatnim_msc
+--------------------------------------------------------------------------------------------------------------------------------------
+WIDOK NR 2
+--
+
+--------------------------------------------------------------------------------------------------------------------------------------
