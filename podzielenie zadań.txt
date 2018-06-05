@@ -7,9 +7,9 @@ TRIGGERS (10):
  -5) Po anulowaniu zamowienia, powrot do stanu kasy i powrót do stanu magazynu. 
  j-6) przy zwalnianiu pracownika upewnianie sie czy stanowisko nie bedzie puste
  -7) dodawanie premi w 12 miesiącu wszystkim pracownikom
- j-8) resetowanie kasy o 6 rano
+ j-8) Przy zamowieniu czegoś co jest mniej niż 5 kg w magazynie ma wyskoczyc komunikat, a gdy czegos brakuje blad !
  -9) usuwanie starszych zamówień niż 5(opcjonalnie) lat.
- j-10) przyznanie pracownikowi i najwiekszej liczbie godzin w misiącu premi.
+ j-10) Wlaczanie kasy przy zamowieniu z danej kasy (gdy byla nieaktywna).
  -11) pracownik nie moze miec wiecej niż 500 h w miesiącu.
 
 FUNCTIONS (10):
