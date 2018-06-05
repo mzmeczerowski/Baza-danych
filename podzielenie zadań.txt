@@ -9,7 +9,7 @@
 TRIGGERS (10):
 Xm-1) stan kasy(ilosc pieniedzy w kasie);
  j-2) stan magazynu(stan magazynu - ilosc * zamuwienie) -;
- m3) informacja gdy ilość towaru <= 30)
+ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxm3) informacja gdy ilość towaru <= 30) to juz jest w pk 8- Patrz co wymyslasz xD
  j-4) stanowiska(czy wolne)
  -5) Po anulowaniu zamowienia, powrot do stanu kasy i powrót do stanu magazynu. 
  j-6) przy zwalnianiu pracownika upewnianie sie czy stanowisko nie bedzie puste
