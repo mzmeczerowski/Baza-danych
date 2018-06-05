@@ -72,7 +72,43 @@ END
 END
 
 SELECT * FROM Zamowienia
-------------------------------------------
+--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+TRIGGER NR 5
+------Powrót do stanu pierwotnego kasy i magazynu-----------------------------------------
+CREATE TRIGGER powrot_do_stanu_pierwotnego ON Zamowienia
+AFTER DELETE
+AS
+BEGIN
+IF (SELECT id_produkt FROM deleted) IS NOT NULL
+BEGIN
+DECLARE @nowe table (ilosc int, id_kasa int, cena money)
+insert into @nowe SELECT del.ilosc, del.id_kasa, pro.cena_za_porcje
+FROM deleted as del join Produkty as pro on del.id_produkt = pro.id_produkt
+
+UPDATE Kasa SET stan-=(select ilosc*cena from @nowe)
+WHERE id_kasa = (SELECT id_kasa FROM @nowe)
+
+DECLARE @Ilosc FLOAT
+SET @Ilosc = (SELECT ilosc FROM deleted) * (SELECT gramatura_porcji FROM Produkty as P JOIN deleted as del ON P.id_produkt = del.id_produkt )/1000
+UPDATE Produkty
+SET [stan_magazyn(w kg)] += @Ilosc
+WHERE id_produkt = (SELECT id_produkt FROM deleted)
+END
+
+IF (SELECT id_stanowisko FROM deleted) IS NOT NULL
+BEGIN
+DECLARE @nowe1 table (ilosc int, id_kasa int, cena money)
+insert into @nowe1 SELECT del.ilosc, del.id_kasa, usl.cena
+FROM deleted as del
+join StanowiskaUslug as sta on del.id_stanowisko = sta.id_stanowisko
+join Usługa as usl on sta.id_usluga = usl.id_usluga
+
+UPDATE Kasa SET stan-=(select ilosc*cena from @nowe1)
+WHERE id_kasa = (SELECT id_kasa FROM @nowe1)
+END
+END
+GO
+--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 TRIGGER NR 6
 ---Wyzwalacz przy zwalnianiu pracownika upewnia sie czy jest jakas osoba na to samo stanowisko ------------
 CREATE TRIGGER czy_jest_inny_pracownik ON Pracownicy
