@@ -39,3 +39,19 @@ END
 END
 
 SELECT * FROM Zamowienia
+------------------------------------------
+---Wyzwalacz przy zwalnianiu pracownika upewnia sie czy jest jakas osoba na to samo stanowisko ------------
+CREATE TRIGGER czy_jest_inny_pracownik ON Pracownicy
+INSTEAD OF DELETE
+AS
+BEGIN
+DECLARE @stanowisko INT
+SET @stanowisko = (SELECT id_stanowisko FROM deleted)
+IF EXISTS (SELECT P.id_pracownik FROM Pracownicy P LEFT JOIN deleted D
+ON P.id_pracownik = D.id_pracownik WHERE P.id_stanowisko = @stanowisko AND D.id_pracownik IS NULL)
+DELETE FROM Pracownicy WHERE id_pracownik = (SELECT id_pracownik FROM deleted)
+ELSE
+PRINT 'NIE MOZNA USUNAC PRACOWNIKA!!! NIE MAMY NIKOGO NA JEGO MIEJSCE !!!!'
+END
+ ---------------------------------------------------------------------
+ ---
