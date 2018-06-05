@@ -1,5 +1,5 @@
 USE KlubRozrywki
---||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||--
+--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 TRIGGER NR 1
 ---Trigger Stan Kasy ---
 CREATE TRIGGER stan_Kasy on Zamowienia
@@ -28,7 +28,7 @@ WHERE id_kasa = (SELECT id_kasa FROM @nowe1)
 END
 END
 GO
---|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||--
+--||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 TRIGGER NR 2
 --------Wyzwalacz aktualizujacy stan magazynu po zakupie --------
 CREATE TRIGGER stan_magazynu ON Zamowienia
@@ -50,7 +50,14 @@ SELECT * FROM Produkty
 GO
 INSERT INTO Zamowienia VALUES(2,NULL,2,2,GETDATE())
 SELECT * FROM Produkty
--------------------------------------------------------------------------------------------------
+--||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+TRIGGER NR 3
+--
+-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
+-- XXXXXXXXXXXXXXXXXXXXXXXX
+-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+--
+--||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 TRIGGER NR 4
 ---------------------Wyzwalacz zmieniajacy stan satnowiska po zamowieniu *jesli jest juz zajete nie pozwala na zakup -------------
 CREATE TRIGGER zajete ON Zamowienia
@@ -72,7 +79,7 @@ END
 END
 
 SELECT * FROM Zamowienia
---|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+--||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 TRIGGER NR 5
 ------Powrót do stanu pierwotnego kasy i magazynu-----------------------------------------
 CREATE TRIGGER powrot_do_stanu_pierwotnego ON Zamowienia
@@ -108,7 +115,7 @@ WHERE id_kasa = (SELECT id_kasa FROM @nowe1)
 END
 END
 GO
---|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 TRIGGER NR 6
 ---Wyzwalacz przy zwalnianiu pracownika upewnia sie czy jest jakas osoba na to samo stanowisko ------------
 CREATE TRIGGER czy_jest_inny_pracownik ON Pracownicy
@@ -123,9 +130,11 @@ DELETE FROM Pracownicy WHERE id_pracownik = (SELECT id_pracownik FROM deleted)
 ELSE
 PRINT 'NIE MOZNA USUNAC PRACOWNIKA!!! NIE MAMY NIKOGO NA JEGO MIEJSCE !!!!'
 END
- ---------------------------------------------------------------------
- ---
- --------------------------------------------------------------------------------------------
+--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+TRIGGER NR 7
+-----przyznanie premi swiątecznej-----------
+
+--||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 TRIGGER NR 8
 ------Przy zamowieniu czegos czego jest mniej niż 5 kg w magazynie wyskakuje komunikat=----
 CREATE TRIGGER gdy_malo ON Zamowienia
@@ -143,9 +152,12 @@ BEGIN
 	END
 END
 INSERT INTO Zamowienia VALUES (3,25,NULL,1,GETDATE())
+--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+TRIGGER NR 9
+---------
 
+--||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
  TRIGGER NR 10
-  ---------------------------------------------------------------------
  ------Włacza kase gdy chce sie z niej cos zamowic
  CREATE TRIGGER wlacz_kase ON Zamowienia
 AFTER INSERT
