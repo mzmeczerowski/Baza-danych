@@ -1,4 +1,4 @@
---Funckja sprawdzajaca czy jest wolne stanowisko do np. gry w bilard --
+-Funckja sprawdzajaca czy jest wolne stanowisko do np. gry w bilard --
 CREATE FUNCTION czy_wolne_stanowisko(@id_usluga INT)
 RETURNS VARCHAR(50)
 AS
@@ -37,7 +37,6 @@ GO
 SELECT dbo.ilosc_w_danym_dniu(1,'2018-01-01') AS Ilosc
 -----------------------------------------------------------------------------
 ---Funckja wypisujaca pracownikow majacych kiedykolwiek dany rodzaj premii(id_premia)----
-
 CREATE FUNCTION kto_mial_premie(@id_premia INT)
 RETURNS TABLE
 AS
@@ -50,31 +49,7 @@ WHERE PR.id_premii = @id_premia
 SELECT * FROM dbo.kto_mial_premie(4) AS Premiowani
 
 ---------------------------------------------------------------------------------------
-CREATE FUNCTION pracownicy_na_imprezie_artysty (@id_artysta INT)
-RETURNS TABLE
-AS
-RETURN (
-SELECT P.imie,P.nazwisko,SP.nazwa_stanowiska,I.nazwaImprezy,A.nazwa FROM StanowiskaPracy SP 
-JOIN Pracownicy P ON SP.id_stanowisko=P.id_stanowisko
-JOIN Impreza_pracownicy IP ON P.id_pracownik=IP.id_pracownik
-JOIN Impreza I ON IP.id_impreza=I.id_impreza
-JOIN Impreza_artysci IA ON I.id_impreza=IA.id_impreza
-JOIN Artysci A ON IA.id_artysta= A.id_artysta
- WHERE A.id_artysta = @id_artysta
- )
- SELECT * FROM pracownicy_na_imprezie_artysty(5) AS Pracownicy
- --------------------------------------------------------
----Funkcja wypisujaca na ilu imprezach byl dany artysta ----
- CREATE FUNCTION na_ilu_imprezach (@id_artysta INT )
- RETURNS INT
- AS
- BEGIN
- DECLARE @Ile INT
- SET @Ile = (SELECT COUNT(*) FROM Impreza_artysci WHERE id_artysta = @id_artysta)
- RETURN @Ile
- END
- ------------------------------------------------------------------
- ----Funckja liczaca dzienny obrot na danej kasie ------------
+----Funckja liczaca dzienny obrot na danej kasie ------------
 DROP FUNCTION dbo.obrot_kasy
 CREATE FUNCTION	obrot_kasy(@id_kasa INT, @data DATE)
 RETURNS FLOAT
@@ -101,3 +76,49 @@ END
 ----Przyklad ponizej----
 SELECT dbo.obrot_kasy(1,'2018-06-05') AS Obrot
 -------------------------------------------------------
+-----Funkcja liczaca ile kosztowali artysci na imprezy w danych ramach czasowych ----
+CREATE FUNCTION Ile_kosztowali_artysci (@odKiedy DATE, @doKiedy DATE)
+RETURNS FLOAT
+AS
+BEGIN 
+RETURN (SELECT SUM(A.placa) FROM Artysci A
+JOIN Impreza_artysci IA ON A.id_artysta = IA.id_artysta 
+JOIN Impreza I ON IA.id_impreza = I.id_impreza 			
+WHERE I.data_imprezy BETWEEN @odKiedy AND @doKiedy)  
+END
+----przyklad----
+SELECT dbo.Ile_kosztowali_artysci ('2018-05-26','2018-06-10' ) AS suma
+-----------------------------------------------------------------------------------------
+ 
+---------Funkcja wypisujaca dane pracowników zamieszkałych w danym miescie ----------
+CREATE FUNCTION pracownicy_z_miasta (@miasto VARCHAR(20))
+RETURNS TABLE
+AS
+RETURN (
+SELECT imie,nazwisko,nazwa_stanowiska,stawka_godzinowa FROM Pracownicy P JOIN StanowiskaPracy SP ON P.id_stanowisko=SP.id_stanowisko
+WHERE miasto = @miasto
+)
+------ Przyklad -----------
+SELECT * FROM pracownicy_z_miasta ('Koscierzyna') 
+----------------------------------------------------------------------------
+----- Funckja wypisujaca ile klub obrocil pieniedzy od poczatku na danej kategorii produktu -----------
+CREATE FUNCTION zarobki_kategorii(@id_kategoria INT)
+RETURNS FLOAT
+AS
+BEGIN
+RETURN (SELECT SUM(Z.ilosc * P.cena_za_porcje) FROM Produkty P JOIN Zamowienia Z 
+ON P.id_produkt = Z.id_produkt WHERE P.id_kategoria = @id_kategoria)
+END
+-------------Przyklad-------------------
+SELECT dbo.zarobki_kategorii(1) AS Zarobek
+--------------------------------------------------------------------------------------------------------
+------Widok przedstawiajacy nazwy produktow i ile ich sprzedano w ostatnim miesiacu ----
+------------------VIEW NR 1 --------------------------------------
+CREATE VIEW sprzedane_produkty_w_ostatnim_msc
+AS
+SELECT  Z.id_produkt,P.nazwa_produktu, SUM(ilosc) ilosc_sprzedanych 
+FROM Produkty P JOIN Zamowienia Z ON P.id_produkt=Z.id_produkt 
+WHERE Z.data_zamowienia BETWEEN  CAST(GETDATE()-30 AS DATE) AND CAST(GETDATE() AS DATE)
+GROUP BY Z.id_produkt,P.nazwa_produktu
+
+SELECT * FROM sprzedane_produkty_w_ostatnim_msc
