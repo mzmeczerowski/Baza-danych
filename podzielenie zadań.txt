@@ -1,48 +1,48 @@
 TRIGGERS (10):
  -1) stan kasy(ilosc pieniedzy w kasie);
- -2) stan magazynu(stan magazynu - ilosc * zamuwienie) -;
+ j-2) stan magazynu(stan magazynu - ilosc * zamuwienie) -;
  -3) informacja gdy ilość towaru <= 30)
- -4) stanowiska(czy wolne)
+ j-4) stanowiska(czy wolne)
  -5) Po anulowaniu zamowienia, powrot do stanu kasy i powrót do stanu magazynu. 
- -6) przy zwalnianiu pracownika upewnianie sie czy stanowisko nie bedzie puste
+ j-6) przy zwalnianiu pracownika upewnianie sie czy stanowisko nie bedzie puste
  -7) dodawanie premi w 12 miesiącu wszystkim pracownikom
- -8) resetowanie kasy o 6 rano
+ j-8) resetowanie kasy o 6 rano
  -9) usuwanie starszych zamówień niż 5(opcjonalnie) lat.
- -10) przyznanie pracownikowi i najwiekszej liczbie godzin w misiącu premi.
+ j-10) przyznanie pracownikowi i najwiekszej liczbie godzin w misiącu premi.
  -11) pracownik nie moze miec wiecej niż 500 h w miesiącu.
 
 FUNCTIONS (10):
  -1) ilość produktu w magazynie - stan(produkt);
- -2) wyswietl wolne stanowaiska danej usługi - czy_wolne_stanowisko(id_usługa) @bool;
+ j-2) wyswietl wolne stanowaiska danej usługi - czy_wolne_stanowisko(id_usługa) @bool;
  -3) wypłaty_pracowników(data_wypłaty);
- -4) pracownicy zarabiajacy wiecej niż(x);
+ j-4) pracownicy zarabiajacy wiecej niż(x);
  -5) pracownicy_na_imprezie(impreza) @pracownicy;
- -6) ilośc_zamuwien_produktu_w_danym_dniu(data, id_produktu) @table
+ j-6) ilośc_zamuwien_produktu_w_danym_dniu(data, id_produktu) @table
  -7) wypisz wszystkie produkty od danego dostawcy (dostawca) @produkty
- -8) wypsanie pracownikow,mmajcy kiedykowliek premie(id_premia)
+ j-8) wypsanie pracownikow,mmajcy kiedykowliek premie(id_premia)
  -9) pracownicy co w danym momencie są dostępni, czyli nie mają urlopu();
- -10)FUnkcja wypisujaca dane pracownikow bedacych na imprezach danego artysty (@id_artysta)
+ j-10)FUnkcja wypisujaca dane pracownikow bedacych na imprezach danego artysty (@id_artysta)
  -11) ile osob jest na danym stanowisku pracy()
- -12)Funkcja wypisujaca na ilu imprezach byl artysta
+ j-12)Funkcja wypisujaca na ilu imprezach byl artysta
  -13) aktualny stan wszystkich kas() @stan return;
- -14)Funkcja liczaca dzienny obrot na danej kasie:
+ j-14)Funkcja liczaca dzienny obrot na danej kasie:
  -15) liczy ktory pracownik najwiecej sprzedał na kasie(miesiąc, dzień, rok) return;
- -16) ile kosztowała impreza [czyli ile trzeba zapłacić wszytskim artystom na danej imprezie] (id_impreza)
- -17) Promocja na drinki (ile obniżki)
- -18) 
+ j-16) ile kosztowała impreza [czyli ile trzeba zapłacić wszytskim artystom na danej imprezie i pracownikom (liczac ze trwala 8 h] (id_impreza)
+ -17) Promocja na drinki (ile obniżki)j
+ j-18) 
  -19)
- -20)
+ j-20)
 
 
 PROCEDURES (10):
  -1)sprzedarz towaru "kasa" (@jaki towar, @ilość, getdate());
- -2)uzupełnienie magazynu (@towar, @ilość);
+ j-2)uzupełnienie magazynu (@towar, @ilość);
  -3)danie_premii(id_pracownik, id_premia);
- -4)dodanie urlopu(pracownik, data_rozpoczecia, data zakonczenia)
+ j-4)dodanie urlopu(pracownik, data_rozpoczecia, data zakonczenia)
 m-5)sprzedarz usługi "kasa" (id_stanowisko, getdate())- warunek jesli zajete to błąd
- -6)Zwalnianie stanowiska po opuszczeniu przez graczy stanowiska usług (id_stanowisko) - warunek jesli wolne to bląd
+ j-6)Zwalnianie stanowiska po opuszczeniu przez graczy stanowiska usług (id_stanowisko) - warunek jesli wolne to bląd
  -7) zatrudnienie pracownika(wszytskie dane pracownika)
- -8)Zamiana artystów na imprezie (Artysta zrezygnował, trzeba szybko wziac kogoś innego) (Doda artyste do bazy i zamieni) 
+ j-8)Zamiana artystów na imprezie (Artysta zrezygnował, trzeba szybko wziac kogoś innego) (Doda artyste do bazy i zamieni) 
  -9) zwolnienie Pracownika
- -10) zwiekszanie wypłaty (stanowiska, procent) - jesli 100% to bez zmian
- -11)Procedura ta doda pracownika o najmniejszej ilosci godzin w danym miesiacu (podac nalezy dzien wyplaty) do nastepnej imprezy (jesli      go nie ma i takze impreza jest juz w bazie danych
+ j-10) zwiekszanie wypłaty (stanowiska, procent) - jesli 100% to bez zmian
+ j-11)Procedura ta doda pracownika o najmniejszej ilosci godzin w danym miesiacu (podac nalezy dzien wyplaty) do nastepnej imprezy (jesli      go nie ma i takze impreza jest juz w bazie danych
