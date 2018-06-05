@@ -30,12 +30,13 @@ FUNCTIONS (10):
  -15) liczy ktory pracownik najwiecej sprzedał na kasie(miesiąc, dzień, rok) return;
  j-16) ile kosztowali artysci w danych rramach cxzasowych (@od_kiedy,@do_kiedy)
  -17) Wypisz uslugę najczęściej sprzedawana w danych ramach czasowych (@od_kiedy,@do_kiedy)
- j-18) Wypisz produkty i ilosc sprzedanych w danych ramach czasowych(@od_kiedy,@do_kiedy)
- -19)Wypisz nazwe i numery telefonu artystow ktorzy jeszcze nie byli na zadnej imprezie w klubie (VIEW)
- j-20)Wypisz stanowiska pracy, pracowników zamieszkałych w danym mieście (@miasto)
- 21)Wypisz produkt na ktorym zrobiono najwiekszy obrot w danym mieiacu (@miesiac)
-
-
+ j-18)Funkcja wypisujaca dane pracowników zamieszkałych w danym miescie  (@miasto)
+ 19)Wypisz produkt na ktorym zrobiono najwiekszy obrot w danym mieiacu (@miesiac)
+ j-20)Wypisz ile klub zarobił od początku na danej kategorii produktu (@kategoria)
+ 
+ VIEWS (2)
+  -1)Wypisz nazwe i numery telefonu artystow ktorzy jeszcze nie byli na zadnej imprezie w klubie (VIEW)
+j-2 Wypisz produkty i ile ich sprzedano w ostatnim miesiącu (VIEW)
 PROCEDURES (10):
  -1)sprzedarz towaru "kasa" (@jaki towar, @ilość, getdate());
  j-2)uzupełnienie magazynu (@towar, @ilość);
