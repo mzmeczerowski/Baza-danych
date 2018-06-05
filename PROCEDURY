@@ -1,3 +1,4 @@
+PROCEDURA NR 2
 ----procedura kupna towaru od dostawcow ----
 CREATE PROCEDURE Zamowienie_towaru(@id_produkt INT ,@ilosc FLOAT)
 AS
@@ -7,6 +8,7 @@ WHERE id_produkt = @id_produkt
 ---tu dodamy 2,5 litra zubrowki do magazynu ---
 EXEC Zamowienie_towaru 1, 2.5
 -----------------------------------------------
+PROCEDUR NR 4
 ----procedura dania urlopu danemu pracownikowi na x dni----
 CREATE PROCEDURE Dodaj_urlop (@id_pracownik INT, @na_ile_dni INT)
 AS
@@ -16,6 +18,7 @@ INSERT INTO Urlopy VALUES (@id_pracownik,CAST(GETDATE() AS DATE),@doKiedy)
 ----dodamy urlop pracownikowi na 5 dni ----
 EXEC Dodaj_urlop 1,5
 --------------------------------------------------
+PROCEDURA NR 6
 ------zakonczenie uslugi przy danym stanowisko (po oddaniu bili, rzutek czy pileczek) ----
 CREATE PROCEDURE ZwolnijStanowisko (@nrStanowiska INT)
 AS
@@ -31,6 +34,7 @@ PRINT 'Stanowisko jest wolne!!!'  ---Przy probie wykonanie tego na wolnym stanow
 EXEC ZwolnijStanowisko 3
 SELECT * FROM StanowiskaUslug
 ----------------------------------------------------------------
+PROCEDURA NR 8
 ---Procedura doda artyste do bazy danych a nastepnie zamieni wybranego artyste na wybranym koncercie
 
 CREATE PROCEDURE ZmienArtyste (@nazwa VARCHAR(20),@kontakt INT, @profesja VARCHAR(20), @placa MONEY, @id_impreza INT, @id_artysta INT)
@@ -43,6 +47,7 @@ WHERE id_impreza = @id_impreza AND id_artysta = @id_artysta
 EXEC ZmienArtyste Marianek,664855555,Piosenkarz,3000,2,4
 SELECT * FROM Artysci JOIN Impreza_artysci ON Artysci.id_artysta=Impreza_artysci.id_artysta
 -------------------------------------------------------------------------------
+PROCEDURA NR 10
 ---Procedura ta doda pracownika o najmniejszej ilosci godzin w danym miesiacu (podac nalezy dzien wyplaty) do nastepnej imprezy (jesli go nie 
 ---ma i takze impreza jest juz w bazie danych----
 CREATE PROCEDURE DodajPracownika (@data_wyplaty DATE)
