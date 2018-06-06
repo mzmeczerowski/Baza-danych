@@ -1,3 +1,14 @@
+PROCEDUR NR 1
+--SPRZEDARZ TOWARU
+CREATE PROC sprzedaj_towar
+@id_towar INT,
+@ilosc INT,
+@kasa INT
+AS
+INSERT INTO Zamowienia(ilosc, id_produkt, id_kasa, data_zamowienia)
+VALUES (@ilosc, @id_towar, @kasa, getdate())
+GO
+-----------------------------------------------
 PROCEDURA NR 2
 ----procedura kupna towaru od dostawcow ----
 CREATE PROCEDURE Zamowienie_towaru(@id_produkt INT ,@ilosc FLOAT)
@@ -7,6 +18,17 @@ SET [stan_magazyn(w kg)] = [stan_magazyn(w kg)] + @ilosc
 WHERE id_produkt = @id_produkt
 ---tu dodamy 2,5 litra zubrowki do magazynu ---
 EXEC Zamowienie_towaru 1, 2.5
+----------------------------------------------
+PROCEDUR NR 3
+--PRZYZNANIE PREMI PRACOWNIKOWI--------
+CREATE PROC przyznaj_premie
+@id_pracownik INT,
+@id_premii INT
+AS
+UPDATE Wyplata
+SET id_premia = @id_premii
+WHERE id_pracownik = @id_pracownik AND MONTH(data_wyplaty) = MONTH(GETDATE())
+GO
 -----------------------------------------------
 PROCEDUR NR 4
 ----procedura dania urlopu danemu pracownikowi na x dni----
@@ -17,6 +39,22 @@ SET @doKiedy = (SELECT GETDATE() + @na_ile_dni)
 INSERT INTO Urlopy VALUES (@id_pracownik,CAST(GETDATE() AS DATE),@doKiedy)
 ----dodamy urlop pracownikowi na 5 dni ----
 EXEC Dodaj_urlop 1,5
+------------------------------------------------------------
+PROCEDURA NR 5
+CREATE PROC sprzedaj_usluge
+@id_stanowisko INT,
+@ilosc INT,
+@kasa INT
+AS
+IF EXISTS (SELECT czy_wolne FROM StanowiskaUslug WHERE id_stanowisko=@id_stanowisko AND czy_wolne = 1 ) 
+BEGIN
+print ('Jest wolne stanowisko')
+INSERT INTO Zamowienia(ilosc, id_stanowisko, id_kasa, data_zamowienia)
+VALUES (@ilosc, @id_stanowisko, @kasa, getdate())
+END
+ELSE
+print ('stanowisko jest zajęte')
+GO
 --------------------------------------------------
 PROCEDURA NR 6
 ------zakonczenie uslugi przy danym stanowisko (po oddaniu bili, rzutek czy pileczek) ----
@@ -34,6 +72,10 @@ PRINT 'Stanowisko jest wolne!!!'  ---Przy probie wykonanie tego na wolnym stanow
 EXEC ZwolnijStanowisko 3
 SELECT * FROM StanowiskaUslug
 ----------------------------------------------------------------
+PROCEDUR NR 7
+--
+
+-----------------------------------------------
 PROCEDURA NR 8
 ---Procedura doda artyste do bazy danych a nastepnie zamieni wybranego artyste na wybranym koncercie
 
@@ -47,6 +89,10 @@ WHERE id_impreza = @id_impreza AND id_artysta = @id_artysta
 EXEC ZmienArtyste Marianek,664855555,Piosenkarz,3000,2,4
 SELECT * FROM Artysci JOIN Impreza_artysci ON Artysci.id_artysta=Impreza_artysci.id_artysta
 -------------------------------------------------------------------------------
+PROCEDUR NR 9
+--ZATRUDNIENIE PRACOWNIKA
+
+-----------------------------------------------
 PROCEDURA NR 10
 ------------------------------------------------------------------------
 ----Procedura zwiekszajaca o podany procent wynagrodzenie danego stanowiska ---------------
