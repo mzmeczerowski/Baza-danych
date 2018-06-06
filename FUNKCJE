@@ -25,7 +25,10 @@ SELECT dbo.czy_wolne_stanowisko (3) AS Czy_wolne
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 3
 --wypłaty pracowników(data_wypłaty)
-
+CREATE FUNCTION wyplaty(@data DATE)
+RETURNS TABLE AS
+RETURN (SELECT * FROM Wyplata WHERE data_wyplaty = @data)
+GO
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 4
 -----Funckja wypisujaca dane pracownikow majacych wiecej na godzine niz podana kwota -------------
@@ -41,7 +44,12 @@ zarabiaja_wiecej_niz(20) AS Zarobki
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 5
 --pracownicy_na_imprezie(impreza) @pracownicy-----
-
+CREATE FUNCTION kto_na_imprezie(@id_imprezy int)
+RETURNS TABLE AS
+RETURN (SELECT p.imie, p.nazwisko FROM Pracownicy as p
+join Impreza_pracownicy as imp ON p.id_pracownik = imp.id_pracownik
+where imp.id_impreza = @id_imprezy)
+go
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 6
 ---------Funkcja wypisujaca ilosc zamowien danego produktu w danym dniu ------ 
@@ -58,7 +66,11 @@ SELECT dbo.ilosc_w_danym_dniu(1,'2018-01-01') AS Ilosc
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 7
 -- wypisz wszystkie produkty od danego dostawcy (dostawca) @produkty----
-
+CREATE FUNCTION produkty_dostawcy(@id_dostawcy INT)
+RETURNS TABLE AS
+RETURN (SELECT * FROM Produkty
+WHERE id_dostawca = @id_dostawcy)
+go
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 8
 ---Funckja wypisujaca pracownikow majacych kiedykolwiek dany rodzaj premii(id_premia)----
@@ -75,7 +87,12 @@ SELECT * FROM dbo.kto_mial_premie(4) AS Premiowani
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 9
 --pracownicy co w danym momencie są dostępni, czyli nie mają urlopu();
-
+CREATE FUNCTION	dostepni_pracownicy()
+RETURNS TABLE AS
+RETURN (SELECT imie, nazwisko 
+FROM Pracownicy 
+WHERE id_pracownik NOT IN (SELECT id_pracownik FROM Urlopy where od_kiedy <= getdate() and do_kiedy >=getdate()))
+go
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 10
 --Funkcja wypisuje dane pracownikow bedacych na imprezie danego artysty ------
@@ -93,7 +110,10 @@ SELECT * FROM Artysta_a_pracownicy(2)
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 11
 --ile osob jest na danym stanowisku pracy()---
-
+CREATE FUNCTION zapelnienie_stanowiska_pracy(@id_stanowisko INT)
+RETURNS TABLE AS
+RETURN (SELECT * FROM Pracownicy WHERE id_stanowisko = @id_stanowisko)
+GO
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 12
 -----Funkcja wypisuje na ilu imprezach byl artysta ------
@@ -109,7 +129,10 @@ SELECT dbo.Na_ilu_imprezach (1) AS Na_ilu
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 13
 --aktualny stan wszystkich kas() @stan return------
-
+CREATE FUNCTION stan_kas()
+RETURNS TABLE AS
+RETURN (select SUM(stan) from Kasa)
+GO
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 14
 ----Funckja liczaca dzienny obrot na danej kasie ------------
