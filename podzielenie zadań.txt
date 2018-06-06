@@ -56,8 +56,9 @@ PROCEDURES (10):
  xj-4)dodanie urlopu(pracownik, data_rozpoczecia, data zakonczenia)
  xM-5)sprzedarz usługi "kasa" (id_stanowisko, getdate())- warunek jesli zajete to błąd
  xj-6)Zwalnianie stanowiska po opuszczeniu przez graczy stanowiska usług (id_stanowisko) - warunek jesli wolne to bląd
- xM-7) zatrudnienie pracownika(wszytskie dane pracownika)
+ xM-7) zatrudnienie pracownika(wszytskie dane pracownika) TO JEST IDIOTYCZNE !!!!! MASZ TAKA SAMA PROCEDURE NORMALNIE PRZY INSERT
+!!!! CHOCIAZ ZROB JAKAS OBSLUGE BLEDU TAM !!!!!
  xj-8)Zamiana artystów na imprezie (Artysta zrezygnował, trzeba szybko wziac kogoś innego) (Doda artyste do bazy i zamieni) 
- xM-9) zwolnienie Pracownika
+ xM-9) zwolnienie Pracownika 
  xj-10) zwiekszanie wypłaty (stanowiska, procent) - jesli 100% to bez zmian
  xj-11)Procedura ta doda pracownika o najmniejszej ilosci godzin w danym miesiacu (podac nalezy dzien wyplaty) do nastepnej imprezy (jesli      go nie ma i takze impreza jest juz w bazie danych
