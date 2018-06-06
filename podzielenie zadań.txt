@@ -5,12 +5,9 @@
 | j-Jerzy          |
 | X-już zrobione   |
  ------------------
-8.  fun 15)          Tyle mi zostało (niestety)! ;(
-7.  fun 19)
-6.  proc 1)
-5.  proc 3)
-4.  proc 5)
-3.  proc 7)
+5.  fun 15)          Tyle mi zostało (niestety)! ;(
+4.  fun 19)
+3.  proc 1)  
 2.  proc 9)
 1.  view 1)
 
