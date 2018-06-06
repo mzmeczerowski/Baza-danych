@@ -17,7 +17,7 @@
 TRIGGERS (10):
 Xm-1) stan kasy(ilosc pieniedzy w kasie);
  j-2) stan magazynu(stan magazynu - ilosc * zamuwienie) -;
- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxm3) informacja gdy ilość towaru <= 30) to juz jest w pk 8- Patrz co wymyslasz xD
+ M-3) TRIGGER ktory ustawia stan satnowiska na zajete jezeli ktos je wykupił --------NOWE--------
  xj-4) stanowiska(czy wolne)
  Xm5) Po anulowaniu zamowienia, powrot do stanu kasy i powrót do stanu magazynu. 
  xj-6) przy zwalnianiu pracownika upewnianie sie czy stanowisko nie bedzie puste
