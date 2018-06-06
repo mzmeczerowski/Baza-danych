@@ -1,5 +1,5 @@
 PROCEDUR NR 1
---SPRZEDARZ TOWARU
+------------------SPRZEDARZ TOWARU------------------
 CREATE PROC sprzedaj_towar
 @id_towar INT,
 @ilosc INT,
@@ -8,9 +8,9 @@ AS
 INSERT INTO Zamowienia(ilosc, id_produkt, id_kasa, data_zamowienia)
 VALUES (@ilosc, @id_towar, @kasa, getdate())
 GO
------------------------------------------------
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 PROCEDURA NR 2
-----procedura kupna towaru od dostawcow ----
+------------------procedura kupna towaru od dostawcow ------------------
 CREATE PROCEDURE Zamowienie_towaru(@id_produkt INT ,@ilosc FLOAT)
 AS
 UPDATE Produkty
@@ -18,9 +18,9 @@ SET [stan_magazyn(w kg)] = [stan_magazyn(w kg)] + @ilosc
 WHERE id_produkt = @id_produkt
 ---tu dodamy 2,5 litra zubrowki do magazynu ---
 EXEC Zamowienie_towaru 1, 2.5
-----------------------------------------------
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 PROCEDUR NR 3
---PRZYZNANIE PREMI PRACOWNIKOWI--------
+------------------PRZYZNANIE PREMI PRACOWNIKOWI------------------
 CREATE PROC przyznaj_premie
 @id_pracownik INT,
 @id_premii INT
@@ -29,9 +29,9 @@ UPDATE Wyplata
 SET id_premia = @id_premii
 WHERE id_pracownik = @id_pracownik AND MONTH(data_wyplaty) = MONTH(GETDATE())
 GO
------------------------------------------------
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 PROCEDUR NR 4
-----procedura dania urlopu danemu pracownikowi na x dni----
+------------------procedura dania urlopu danemu pracownikowi na x dni------------------
 CREATE PROCEDURE Dodaj_urlop (@id_pracownik INT, @na_ile_dni INT)
 AS
 DECLARE @doKiedy DATE
@@ -39,8 +39,9 @@ SET @doKiedy = (SELECT GETDATE() + @na_ile_dni)
 INSERT INTO Urlopy VALUES (@id_pracownik,CAST(GETDATE() AS DATE),@doKiedy)
 ----dodamy urlop pracownikowi na 5 dni ----
 EXEC Dodaj_urlop 1,5
-------------------------------------------------------------
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 PROCEDURA NR 5
+------------------sprzedarz danej usługi ------------------
 CREATE PROC sprzedaj_usluge
 @id_stanowisko INT,
 @ilosc INT,
@@ -55,9 +56,9 @@ END
 ELSE
 print ('stanowisko jest zajęte')
 GO
---------------------------------------------------
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 PROCEDURA NR 6
-------zakonczenie uslugi przy danym stanowisko (po oddaniu bili, rzutek czy pileczek) ----
+------------------zakonczenie uslugi przy danym stanowisko (po oddaniu bili, rzutek czy pileczek) ------------------
 CREATE PROCEDURE ZwolnijStanowisko (@nrStanowiska INT)
 AS
 IF (SELECT czy_wolne FROM StanowiskaUslug WHERE id_stanowisko = @nrStanowiska) = 0 
@@ -71,9 +72,9 @@ PRINT 'Stanowisko jest wolne!!!'  ---Przy probie wykonanie tego na wolnym stanow
 ---przyklad---
 EXEC ZwolnijStanowisko 3
 SELECT * FROM StanowiskaUslug
-----------------------------------------------------------------
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 PROCEDUR NR 7
---
+------------------ procedura pozwala szybko zatrudnić pracownika------------------
 CREATE PROC zatrudnienie_pracownika
 @imie varchar(20),
 @nazwisko varchar(20),
@@ -90,9 +91,9 @@ INSERT INTO Pracownicy VALUES
 (@imie, @nazwisko, @ulica, @nr_domu, @misato,
 @wojewodztwo, @kod_pocztowy, @obywatelstwo, @id_stanowisko, @data_zatrudnienia)
 go
------------------------------------------------
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 PROCEDURA NR 8
----Procedura doda artyste do bazy danych a nastepnie zamieni wybranego artyste na wybranym koncercie
+------------------Procedura doda artyste do bazy danych a nastepnie zamieni wybranego artyste na wybranym koncercie------------------
 
 CREATE PROCEDURE ZmienArtyste (@nazwa VARCHAR(20),@kontakt INT, @profesja VARCHAR(20), @placa MONEY, @id_impreza INT, @id_artysta INT)
 AS
@@ -103,14 +104,18 @@ WHERE id_impreza = @id_impreza AND id_artysta = @id_artysta
 --przyklad--
 EXEC ZmienArtyste Marianek,664855555,Piosenkarz,3000,2,4
 SELECT * FROM Artysci JOIN Impreza_artysci ON Artysci.id_artysta=Impreza_artysci.id_artysta
--------------------------------------------------------------------------------
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 PROCEDUR NR 9
---ZATRUDNIENIE PRACOWNIKA
-
------------------------------------------------
+------------------ZATRUDNIENIE PRACOWNIKA------------------
+CREATE PROC zwolnij_pracownika
+@id_pracownik INT
+AS
+DELETE Pracownicy
+WHERE id_pracownik = @id_pracownik
+GO
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 PROCEDURA NR 10
-------------------------------------------------------------------------
-----Procedura zwiekszajaca o podany procent wynagrodzenie danego stanowiska ---------------
+------------------Procedura zwiekszajaca o podany procent wynagrodzenie danego stanowiska ------------------
 CREATE PROCEDURE zwieksz_zarobki (@procent FLOAT,@id_stanowisko INT)
 AS
 UPDATE StanowiskaPracy
@@ -118,10 +123,10 @@ SET stawka_godzinowa = stawka_godzinowa + (stawka_godzinowa * @procent)/100
 WHERE id_stanowisko = @id_stanowisko
 ----Przyklad-----
 EXEC zwieksz_zarobki 20,11
-------------------------------------------------
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 PROCEDURA NR 11
----Procedura ta doda pracownika o najmniejszej ilosci godzin w danym miesiacu (podac nalezy dzien wyplaty) do nastepnej imprezy (jesli go nie 
----ma i takze impreza jest juz w bazie danych----
+------------------Procedura ta doda pracownika o najmniejszej ilosci godzin w danym miesiacu (podac nalezy dzien wyplaty)---------------
+------------------do nastepnej imprezy (jesli go nie ma i takze impreza jest juz w bazie danych------------------
 CREATE PROCEDURE DodajPracownika (@data_wyplaty DATE)
 AS
 IF (SELECT TOP 1 data_imprezy FROM Impreza Order by id_impreza DESC ) > GETDATE()
