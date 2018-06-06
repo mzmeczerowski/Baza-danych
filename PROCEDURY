@@ -74,7 +74,22 @@ SELECT * FROM StanowiskaUslug
 ----------------------------------------------------------------
 PROCEDUR NR 7
 --
-
+CREATE PROC zatrudnienie_pracownika
+@imie varchar(20),
+@nazwisko varchar(20),
+@ulica varchar(40),
+@nr_domu int,
+@misato varchar(30),
+@wojewodztwo varchar(30),
+@kod_pocztowy int,
+@obywatelstwo varchar(20),
+@id_stanowisko INT,
+@data_zatrudnienia date
+AS
+INSERT INTO Pracownicy VALUES
+(@imie, @nazwisko, @ulica, @nr_domu, @misato,
+@wojewodztwo, @kod_pocztowy, @obywatelstwo, @id_stanowisko, @data_zatrudnienia)
+go
 -----------------------------------------------
 PROCEDURA NR 8
 ---Procedura doda artyste do bazy danych a nastepnie zamieni wybranego artyste na wybranym koncercie
