@@ -1,6 +1,4 @@
-USE KlubRozrywki
---|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-TRIGGER NR 1
+--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 ---Trigger Stan Kasy ---
 CREATE TRIGGER stan_Kasy on Zamowienia
 AFTER INSERT 
@@ -21,15 +19,14 @@ DECLARE @nowe1 table (ilosc int, id_kasa int, cena money)
 insert into @nowe1 SELECT ins.ilosc, ins.id_kasa, usl.cena
 FROM inserted as ins
 join StanowiskaUslug as sta on ins.id_stanowisko = sta.id_stanowisko
-join Usługa as usl on sta.id_usluga = usl.id_usluga
+join Usluga as usl on sta.id_usluga = usl.id_usluga
 
 UPDATE Kasa SET stan+=(select ilosc*cena from @nowe1)
 WHERE id_kasa = (SELECT id_kasa FROM @nowe1)
 END
 END
 GO
---||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-TRIGGER NR 2
+--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 --------Wyzwalacz aktualizujacy stan magazynu po zakupie --------
 CREATE TRIGGER stan_magazynu ON Zamowienia
 AFTER INSERT
@@ -50,15 +47,8 @@ SELECT * FROM Produkty
 GO
 INSERT INTO Zamowienia VALUES(2,NULL,2,2,GETDATE())
 SELECT * FROM Produkty
---||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-TRIGGER NR 3
---
--- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
--- XXXXXXXXXXXXXXXXXXXXXXXX
--- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
---
---||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-TRIGGER NR 4
+GO
+--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 ---------------------Wyzwalacz zmieniajacy stan satnowiska po zamowieniu *jesli jest juz zajete nie pozwala na zakup -------------
 CREATE TRIGGER zajete ON Zamowienia
 AFTER INSERT
@@ -77,10 +67,8 @@ BEGIN
 	PRINT 'Stanowisko jest juz zajete'
 END
 END
-
-SELECT * FROM Zamowienia
---||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-TRIGGER NR 5
+GO
+--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 ------Powrót do stanu pierwotnego kasy i magazynu-----------------------------------------
 CREATE TRIGGER powrot_do_stanu_pierwotnego ON Zamowienia
 AFTER DELETE
@@ -108,30 +96,29 @@ DECLARE @nowe1 table (ilosc int, id_kasa int, cena money)
 insert into @nowe1 SELECT del.ilosc, del.id_kasa, usl.cena
 FROM deleted as del
 join StanowiskaUslug as sta on del.id_stanowisko = sta.id_stanowisko
-join Usługa as usl on sta.id_usluga = usl.id_usluga
+join Usluga as usl on sta.id_usluga = usl.id_usluga
 
 UPDATE Kasa SET stan-=(select ilosc*cena from @nowe1)
 WHERE id_kasa = (SELECT id_kasa FROM @nowe1)
 END
 END
 GO
---|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-TRIGGER NR 6
----Wyzwalacz przy zwalnianiu pracownika upewnia sie czy jest jakas osoba na to samo stanowisko ------------
+--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+---Wyzwalacz po zwalnianiu pracownika upewnia sie czy jest jakas osoba na to samo stanowisko------------
 CREATE TRIGGER czy_jest_inny_pracownik ON Pracownicy
-INSTEAD OF DELETE
+AFTER DELETE
 AS
 BEGIN
 DECLARE @stanowisko INT
 SET @stanowisko = (SELECT id_stanowisko FROM deleted)
 IF EXISTS (SELECT P.id_pracownik FROM Pracownicy P LEFT JOIN deleted D
 ON P.id_pracownik = D.id_pracownik WHERE P.id_stanowisko = @stanowisko AND D.id_pracownik IS NULL)
-DELETE FROM Pracownicy WHERE id_pracownik = (SELECT id_pracownik FROM deleted)
+PRINT 'Usunieto pracownika ! Sa jeszcze pracownincy na to stanowisko'
 ELSE
-PRINT 'NIE MOZNA USUNAC PRACOWNIKA!!! NIE MAMY NIKOGO NA JEGO MIEJSCE !!!!'
+PRINT 'SZUKAJ NOWEGO PRACOWNIKA'
 END
---|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-TRIGGER NR 7
+GO
+--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 -----przyznanie premi swiątecznej-----------------------------
 CREATE TRIGGER premia_swiateczna ON wyplata
 AFTER INSERT
@@ -143,8 +130,7 @@ SET id_premia = 3 --Premia świąteczna
 WHERE MONTH(data_wyplaty) = 12
 END
 GO
---||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-TRIGGER NR 8
+--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 ------Przy zamowieniu czegos czego jest mniej niż 5 kg w magazynie wyskakuje komunikat=----
 CREATE TRIGGER gdy_malo ON Zamowienia
 AFTER INSERT
@@ -161,8 +147,8 @@ BEGIN
 	END
 END
 INSERT INTO Zamowienia VALUES (3,25,NULL,1,GETDATE())
+GO
 --|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-TRIGGER NR 9
 ---------usuwanie starszych zamówień niż 5 lat--------------------
 CREATE TRIGGER czyszczenie_pamieci ON Zamowienia
 AFTER INSERT
@@ -175,7 +161,6 @@ PRINT 'Z TABELI ZAMOWIENIA ZOSTAŁ USUNIĘTY REKORD STARSZY NIŻ 5 LAT'
 END
 GO
 --||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
- TRIGGER NR 10
  ------Włacza kase gdy chce sie z niej cos zamowic
  CREATE TRIGGER wlacz_kase ON Zamowienia
 AFTER INSERT
@@ -192,9 +177,32 @@ PRINT 'Kasa zostala uruchomiona'
 END
 END 
 INSERT INTO Zamowienia VALUES (3,9,NULL,3,GETDATE())
-|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-TRIGGER NR 11
-------
+GO
+--IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIiiiiii
+------Po dodaniu kasy przelewa jej 200 zl z kasy w ktorej jest najwiecej pieniedzy (jesli jest wiecej niz 300) ---------
+CREATE TRIGGER dodaj_kase ON Kasa
+AFTER INSERT
+AS
+BEGIN 
+DECLARE @id_kasa TINYINT
+SET @id_kasa = (SELECT TOP 1 id_kasa FROM Kasa ORDER BY stan)
+IF (SELECT stan FROM Kasa WHERE id_kasa = @id_kasa) >= 300
+BEGIN
+	UPDATE Kasa
+	SET stan += 200
+	WHERE id_kasa = (SELECT id_kasa FROM inserted)
+	UPDATE Kasa
+	SET stan -=200
+	WHERE id_kasa = @id_kasa
+END
+ELSE 
+BEGIN
+	PRINT 'W zadnej kasie nie ma wiecej niz 300zl '
+	ROLLBACK
+END
+END
+GO
 
+ 
 
 
