@@ -163,8 +163,21 @@ END
 SELECT dbo.obrot_kasy(1,'2018-06-05') AS Obrot
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 15
---liczy ktory pracownik najwiecej sprzedał na kasie(miesiąc, dzień, rok) return;
+--liczy ktory pracownik najwiecej sprzedał na kasie(miesiąc) return;
+CREATE FUNCTION pracownik_miesiaca(@data DATE)
+RETURNS table
+AS
+RETURN
+(SELECT TOP 1 p.id_pracownik, SUM(pr.cena_za_porcje * z.ilosc) AS Suma FROM Pracownicy p
+JOIN Kasa k ON p.id_pracownik = k.id_pracownik
+JOIN Zamowienia z ON k.id_kasa = z.id_kasa
+JOIN Produkty pr ON z.id_produkt = pr.id_produkt
+where month(z.data_zamowienia) = month(@data)
+GROUP BY p.id_pracownik
+ORDER BY Suma DESC)
+GO
 
+select * FROM dbo.pracownik_miesiaca('2018-06-01')
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 16
 -----Funkcja liczaca ile kosztowali artysci na imprezy w danych ramach czasowych ----
