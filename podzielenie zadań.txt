@@ -4,11 +4,8 @@
 | m-Marcel         |
 | j-Jerzy          |
 | X-już zrobione   |
- ------------------
-5.  fun 15)          Tyle mi zostało (niestety)! ;(
-4.  fun 19)
-3.  proc 1)  
-2.  proc 9)
+ ------------------          Tyle mi zostało (niestety)! ;(
+2.  fun 19) 
 1.  view 1)
 
 TRIGGERS (10):
@@ -39,9 +36,9 @@ FUNCTIONS (10):
  xj-12)Funkcja wypisujaca na ilu imprezach byl artysta
  XM-13) aktualny stan wszystkich kas() @stan return;
  xj-14)Funkcja liczaca dzienny obrot na danej kasie:
-  M-15) liczy ktory pracownik najwiecej sprzedał na kasie(miesiąc, dzień, rok) return;
+ XM-15) liczy ktory pracownik najwiecej sprzedał na kasie(miesiąc, dzień, rok) return;
  xj-16) ile kosztowali artysci w danych rramach cxzasowych (@od_kiedy,@do_kiedy)
-  M-17) Wypisz uslugę najczęściej sprzedawana w danych ramach czasowych (@od_kiedy,@do_kiedy)
+ XM-17) Wypisz uslugę najczęściej sprzedawana w danych ramach czasowych (@od_kiedy,@do_kiedy)
  xj-18)Funkcja wypisujaca dane pracowników zamieszkałych w danym miescie  (@miasto)
   M-19)Wypisz produkt na ktorym zrobiono najwiekszy obrot w danym mieiacu (@miesiac)
  xj-20)Wypisz ile klub zarobił od początku na danej kategorii produktu (@kategoria)
