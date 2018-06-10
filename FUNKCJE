@@ -195,7 +195,24 @@ SELECT dbo.Ile_kosztowali_artysci ('2018-05-26','2018-06-10' ) AS suma
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 17
 -- Wypisz uslugę najczęściej sprzedawana w danych ramach czasowych (@od_kiedy,@do_kiedy)
+ALTER FUNCTION najlepsza_usluga(@od date, @do date)
+RETURNS VARCHAR(20)
+BEGIN
+RETURN
+(SELECT rodzaj_uslugi FROM
+(SELECT top 1 US.rodzaj_uslugi, count(ZA.id_zamowienie) AS ilosc FROM Usluga AS US
+JOIN StanowiskaUslug AS SUS ON US.id_usluga = SUS.id_usluga
+JOIN Zamowienia AS ZA ON SUS.id_stanowisko = ZA.id_stanowisko
+ WHERE ZA.data_zamowienia >= @OD AND ZA.data_zamowienia <= @DO
+ GROUP BY US.rodzaj_uslugi
+ order by ilosc desc
+ ) AS X
+ )
+END
+GO
 
+print dbo.najlepsza_usluga('2018-06-01', '2018-06-05')
+go
 --------------------------------------------------------------------------------------------------------------------------------------
  FUNKCJA NR 18
 ---------Funkcja wypisujaca dane pracowników zamieszkałych w danym miescie ----------
