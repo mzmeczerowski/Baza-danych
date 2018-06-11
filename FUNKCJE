@@ -260,7 +260,10 @@ SELECT dbo.zarobki_kategorii(1) AS Zarobek
 --------------------------------------------------------------------------------------------------------------------------------------
 WIDOK NR 1
 --Wypisz nazwe i numery telefonu artystow ktorzy jeszcze nie byli na zadnej imprezie w klubie (VIEW)---
-
+CREATE VIEW nie_byli_na_imprezie
+AS
+SELECT A.nazwa, A.kontakt FROM Artysci AS A FULL JOIN Impreza_artysci AS IA ON A.id_artysta = IA.id_artysta
+WHERE IA.id_impreza IS NULL
 --------------------------------------------------------------------------------------------------------------------------------------
 WIDOK NR 2
 ------Widok przedstawiajacy nazwy produktow i ile ich sprzedano w ostatnim miesiacu ----
