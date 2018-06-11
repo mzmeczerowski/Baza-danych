@@ -228,7 +228,20 @@ SELECT * FROM pracownicy_z_miasta ('Koscierzyna')
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 19
 --Wypisz produkt na ktorym zrobiono najwiekszy obrot w danym mieiacu (@miesiac)--
+CREATE FUNCTION najlepszy_produkt(@miesiac date)
+returns varchar(20)
+BEGIN
+RETURN (SELECT nazwa_produktu FROM (SELECT TOP 1 P.nazwa_produktu, SUM(Z.ilosc * P.cena_za_porcje) AS obrut FROM Produkty AS P
+JOIN Zamowienia AS Z ON P.id_produkt = Z.id_produkt
+WHERE MONTH(Z.data_zamowienia) = MONTH(@miesiac)
+GROUP BY P.nazwa_produktu
+ORDER BY obrut DESC
+) AS X
+)
+END
+GO
 
+PRINT dbo.najlepszy_produkt('2018-06-02')
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 20
 ----- Funckja wypisujaca ile klub obrocil pieniedzy od poczatku na danej kategorii produktu -----------
