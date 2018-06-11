@@ -1,4 +1,4 @@
-FUNKCJA NR 1
+--FUNKCJA NR 1
 --ilość produktu w magazynie - stan(produkt)---
 CREATE FUNCTION stan(@nazwaproduktu VARCHAR(30))
 RETURNS INT
@@ -111,9 +111,13 @@ SELECT * FROM Artysta_a_pracownicy(2)
 FUNKCJA NR 11
 --ile osob jest na danym stanowisku pracy()---
 CREATE FUNCTION zapelnienie_stanowiska_pracy(@id_stanowisko INT)
-RETURNS TABLE AS
-RETURN (SELECT * FROM Pracownicy WHERE id_stanowisko = @id_stanowisko)
+RETURNS INT
+AS
+BEGIN
+RETURN (SELECT COUNT(*) FROM Pracownicy WHERE id_stanowisko = @id_stanowisko)
+END
 GO
+
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 12
 -----Funkcja wypisuje na ilu imprezach byl artysta ------
@@ -130,8 +134,11 @@ SELECT dbo.Na_ilu_imprezach (1) AS Na_ilu
 FUNKCJA NR 13
 --aktualny stan wszystkich kas() @stan return------
 CREATE FUNCTION stan_kas()
-RETURNS TABLE AS
+RETURNS FLOAT
+AS
+BEGIN
 RETURN (select SUM(stan) from Kasa)
+END
 GO
 --------------------------------------------------------------------------------------------------------------------------------------
 FUNKCJA NR 14
