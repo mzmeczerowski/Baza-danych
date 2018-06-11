@@ -2,16 +2,14 @@
  ------------------
 | LEGENDA:         |
 | m-Marcel         |
-| j-Jerzy          |
+| j-Jerzy          |          !!!!!!!!!!!!!WSZYSTKO JUZ ZROBIONE, ALE DOKUMENTACJI NIE ZROBILEM BO SPIACYM JUTRO EGAZMIN XD !!!!!!!!
 | X-już zrobione   |
- ------------------          Tyle mi zostało (niestety)! ;(
-2.  fun 19) 
-1.  view 1)
+ ------------------         
 
 TRIGGERS (10):
 Xm-1) stan kasy(ilosc pieniedzy w kasie);
  j-2) stan magazynu(stan magazynu - ilosc * zamuwienie) -;
- M-3) TRIGGER ktory ustawia stan satnowiska na zajete jezeli ktos je wykupił --------NOWE-------- to jest jednak nie dobre
+ M-3) XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
  xj-4) stanowiska(czy wolne)
  Xm5) Po anulowaniu zamowienia, powrot do stanu kasy i powrót do stanu magazynu. 
  xj-6) przy zwalnianiu pracownika upewnianie sie czy stanowisko nie bedzie puste
@@ -19,7 +17,7 @@ Xm-1) stan kasy(ilosc pieniedzy w kasie);
  xj-8) Przy zamowieniu czegoś co jest mniej niż 5 kg w magazynie ma wyskoczyc komunikat
  XM9) usuwanie starszych zamówień niż 5(opcjonalnie) lat.
  xj-10) Wlaczanie kasy przy zamowieniu z danej kasy (gdy byla nieaktywna).
- -XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX11) pracownik nie moze miec wiecej niż 500 h w miesiącu. ----  TO MOZNA ZROBIC ZWYKŁYM CHECK !!!
+
 
 FUNCTIONS (10):
  XM-1) ilość produktu w magazynie - stan(produkt);
@@ -40,12 +38,13 @@ FUNCTIONS (10):
  xj-16) ile kosztowali artysci w danych rramach cxzasowych (@od_kiedy,@do_kiedy)
  XM-17) Wypisz uslugę najczęściej sprzedawana w danych ramach czasowych (@od_kiedy,@do_kiedy)
  xj-18)Funkcja wypisujaca dane pracowników zamieszkałych w danym miescie  (@miasto)
-  M-19)Wypisz produkt na ktorym zrobiono najwiekszy obrot w danym mieiacu (@miesiac)
+ XM-19)Wypisz produkt na ktorym zrobiono najwiekszy obrot w danym mieiacu (@miesiac)
  xj-20)Wypisz ile klub zarobił od początku na danej kategorii produktu (@kategoria)
  
  VIEWS (2)
- M-1)Wypisz nazwe i numery telefonu artystow ktorzy jeszcze nie byli na zadnej imprezie w klubie (VIEW)
-xj-2 Wypisz produkty i ile ich sprzedano w ostatnim miesiącu (VIEW)
+ XM-1)Wypisz nazwe i numery telefonu artystow ktorzy jeszcze nie byli na zadnej imprezie w klubie (VIEW)
+ xj-2 Wypisz produkty i ile ich sprzedano w ostatnim miesiącu (VIEW)
+
 PROCEDURES (10):
  xM-1)sprzedarz towaru "kasa" (@jaki towar, @ilość, getdate());
  xj-2)uzupełnienie magazynu (@towar, @ilość);
@@ -53,9 +52,8 @@ PROCEDURES (10):
  xj-4)dodanie urlopu(pracownik, data_rozpoczecia, data zakonczenia)
  xM-5)sprzedarz usługi "kasa" (id_stanowisko, getdate())- warunek jesli zajete to błąd
  xj-6)Zwalnianie stanowiska po opuszczeniu przez graczy stanowiska usług (id_stanowisko) - warunek jesli wolne to bląd
- xM-7) zatrudnienie pracownika(wszytskie dane pracownika) TO JEST IDIOTYCZNE !!!!! MASZ TAKA SAMA PROCEDURE NORMALNIE PRZY INSERT
-!!!! CHOCIAZ ZROB JAKAS OBSLUGE BLEDU TAM !!!!!
+ xM-7) zatrudnienie pracownika(wszytskie dane pracownika) 
  xj-8)Zamiana artystów na imprezie (Artysta zrezygnował, trzeba szybko wziac kogoś innego) (Doda artyste do bazy i zamieni) 
  xM-9) zwolnienie Pracownika 
  xj-10) zwiekszanie wypłaty (stanowiska, procent) - jesli 100% to bez zmian
- xj-11)Procedura ta doda pracownika o najmniejszej ilosci godzin w danym miesiacu (podac nalezy dzien wyplaty) do nastepnej imprezy (jesli      go nie ma i takze impreza jest juz w bazie danych
+ xj-11)Procedura ta doda pracownika o najmniejszej ilosci godzin w danym miesiacu (podac nalezy dzien wyplaty) do nastepnej impreZA (jesli go nie ma i takze impreza jest juz w bazie danych
